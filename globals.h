@@ -24,7 +24,7 @@ typedef enum registers{
 } reg;
 
 /* defines the opcodes and an error */
-typedef enum op_c{
+typedef enum op_code{
     op_mov,
     op_cmp,
     op_add,
@@ -45,14 +45,14 @@ typedef enum op_c{
 } op_code;
 
 /* defines the symbol options */
-typedef enum symb{
+typedef enum symbol{
     ENTRY_SYMBOL,
     DATA_SYMBOL,
     EXTERN_SYMBOL,
     CODE_SYMBOL
 } symbol;
 
-typedef struct line_c{
+typedef struct line_content{
     char *filename;
     char *content;
     int line_number;
