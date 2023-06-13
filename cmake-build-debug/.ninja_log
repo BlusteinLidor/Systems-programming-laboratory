@@ -1,19 +1,10 @@
 # ninja log v5
 46	1243	7081919183633881	CMakeFiles/final_project.dir/ast.c.obj	b023c98dde38b10e
+21	1264	7081919183643856	CMakeFiles/final_project.dir/first_pass.c.obj	2c2cbe04b08eee2
 74	1253	7081919183643856	CMakeFiles/final_project.dir/second_pass.c.obj	a033795aeae49c65
 119	1263	7081919183643856	CMakeFiles/final_project.dir/output_files.c.obj	fe551e12f6d4d282
-21	1264	7081919183643856	CMakeFiles/final_project.dir/first_pass.c.obj	2c2cbe04b08eee2
 12	1265	7081919183633881	CMakeFiles/final_project.dir/preprocessor.c.obj	c3010797e0d35508
-1244	1490	7081919186147458	CMakeFiles/final_project.dir/tables.c.obj	d935d0eb34ee9c5d
-0	1741	7081919188640478	CMakeFiles/final_project.dir/assembler.c.obj	699c7f2395958592
-1253	1745	7081919188680386	CMakeFiles/final_project.dir/other_functions.c.obj	2a681ea0904b918c
-1746	2533	7081919196496057	final_project.exe	4587937c81a599d4
-2	124	7081920320084023	CMakeFiles/final_project.dir/assembler.c.obj	699c7f2395958592
-125	336	7081920322118294	final_project.exe	4587937c81a599d4
-3	107	7081921898940039	CMakeFiles/final_project.dir/other_functions.c.obj	2a681ea0904b918c
-108	321	7081921901014504	final_project.exe	4587937c81a599d4
-3	126	7081922029056018	CMakeFiles/final_project.dir/assembler.c.obj	699c7f2395958592
-127	336	7081922031100816	final_project.exe	4587937c81a599d4
-3	176	7081922518400120	CMakeFiles/final_project.dir/assembler.c.obj	699c7f2395958592
-176	374	7081922520314979	final_project.exe	4587937c81a599d4
 4	122	7081922878178863	CMakeFiles/final_project.dir/assembler.c.obj	699c7f2395958592
+176	374	7081922520314979	final_project.exe	4587937c81a599d4
+1244	1490	7081919186147458	CMakeFiles/final_project.dir/tables.c.obj	d935d0eb34ee9c5d
+3	107	7081921898940039	CMakeFiles/final_project.dir/other_functions.c.obj	2a681ea0904b918c

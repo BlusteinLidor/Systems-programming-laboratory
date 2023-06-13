@@ -5,10 +5,11 @@
 #ifndef FINAL_PROJECT_GLOBALS_H
 #define FINAL_PROJECT_GLOBALS_H
 
-#define MAX_LINE_LENGTH 80
+#define MAX_LINE_LENGTH 81
 #define MEMORY_SIZE 1024
 #define IC_INIT_VALUE 100
 #define LABEL_MAX_SIZE 31
+#define MAX_MACRO_NAME_SIZE 31
 
 /* defines the registers and an option for not-register */
 typedef enum registers{

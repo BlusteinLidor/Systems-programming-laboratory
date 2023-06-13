@@ -100,7 +100,8 @@
 			"sourceIndexes" : 
 			[
 				0,
-				9
+				9,
+				10
 			]
 		},
 		{
@@ -176,6 +177,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "other_functions.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "tables.h",
 			"sourceGroupIndex" : 0
 		}
 	],
