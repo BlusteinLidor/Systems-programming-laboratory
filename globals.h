@@ -10,6 +10,7 @@
 #define IC_INIT_VALUE 100
 #define LABEL_MAX_SIZE 31
 #define MAX_MACRO_NAME_SIZE 31
+#define TABLE_SIZE 256
 
 /* defines the registers and an option for not-register */
 typedef enum registers{
