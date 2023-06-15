@@ -1,7 +1,7 @@
-//
-// Created by לידור on 07/06/2023.
-//
-//@TODO Check if ifndef needed
+/*
+ Created by לידור on 07/06/2023.
+*/
+/*@TODO Check if ifndef needed*/
 #ifndef FINAL_PROJECT_GLOBALS_H
 #define FINAL_PROJECT_GLOBALS_H
 
@@ -64,4 +64,4 @@ typedef struct line_content{
 
 
 
-#endif //FINAL_PROJECT_GLOBALS_H
+#endif /*FINAL_PROJECT_GLOBALS_H*/

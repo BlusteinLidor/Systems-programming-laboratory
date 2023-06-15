@@ -62,7 +62,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				12
 			]
 		}
 	],
@@ -102,7 +103,8 @@
 				0,
 				9,
 				10,
-				11
+				11,
+				13
 			]
 		},
 		{
@@ -116,7 +118,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				12
 			]
 		}
 	],
@@ -130,7 +133,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "assembler.c",
+			"path" : "main.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -154,7 +157,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "tables.c",
+			"path" : "macro_table.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -182,12 +185,23 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "tables.h",
+			"path" : "macro_table.h",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"path" : "preprocessor.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "symbol_table.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "symbol_table.h",
 			"sourceGroupIndex" : 0
 		}
 	],

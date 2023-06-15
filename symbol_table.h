@@ -1,19 +1,15 @@
 //
-// Created by לידור on 13/06/2023.
+// Created by לידור on 15/06/2023.
 //
 
-#ifndef FINAL_PROJECT_TABLES_H
-#define FINAL_PROJECT_TABLES_H
+#ifndef FINAL_PROJECT_SYMBOL_TABLE_H
+#define FINAL_PROJECT_SYMBOL_TABLE_H
 
-typedef struct macro{
-    char *macro_name;
-    char *macro_content;
-} macro;
-
-typedef struct macro_table{
-    macro **macros;
+//@TODO change to symbol
+typedef struct symbol_table{
+    symbol **macros;
     unsigned int free_index;
-} macro_table;
+} symbol_table;
 
 macro_table *new_macro_table(void);
 
@@ -29,6 +25,4 @@ void free_macro_table(macro_table *m_table);
 
 void print_macro_table(macro_table *m_table);
 
-
-
-#endif //FINAL_PROJECT_TABLES_H
+#endif //FINAL_PROJECT_SYMBOL_TABLE_H

@@ -1,6 +1,6 @@
-//
-// Created by לידור on 11/06/2023.
-//
+/*
+ Created by לידור on 11/06/2023.
+*/
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -43,7 +43,8 @@ int string_num(char *str, char *delim){
 }
 
 char **strings(char *string, char *delim){
-    char *token, *temp;
+    char *token;
+    char *temp = (char *) malloc(sizeof(char ) * MAX_LINE_LENGTH);
     int str_num = string_num(string, delim), i = 0;
     char **strings = malloc(sizeof(char *) * str_num);
     if(strings == NULL){
@@ -54,8 +55,9 @@ char **strings(char *string, char *delim){
     token = strtok(string, delim);
 
     while(token != NULL && i < str_num){
-        temp = strdup(token);
-        strings[i] = malloc(sizeof(char) * MAX_LINE_LENGTH);
+        strcpy(temp, token);
+        /*temp = strdup(token);*/
+        strings[i] = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
         if(strings[i] == NULL){
             free(strings[i]);
             free(strings);
@@ -63,6 +65,7 @@ char **strings(char *string, char *delim){
         }
         strcpy(strings[i++], temp);
     }
+    return strings;
 }
 
 void free_string_p(char **strings, int string_num){

@@ -1,10 +1,10 @@
-//
-// Created by לידור on 11/06/2023.
-//
+/*
+ Created by לידור on 11/06/2023.
+*/
 
 #include <stdlib.h>
 #include <string.h>
-#include "tables.h"
+#include "macro_table.h"
 #include "globals.h"
 #include <stdio.h>
 
@@ -45,8 +45,8 @@ char *get_macro_content_from_table(macro_table *m_table, char *macro_name){
         if(strcmp(m_table->macros[i]->macro_name, macro_name) == 0){
             return m_table->macros[i]->macro_content;
         }
-        return NULL;
     }
+    return NULL;
 }
 
 void update_macro_content(macro_table *m_table, char *macro_name, char *macro_update){
