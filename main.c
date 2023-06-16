@@ -8,6 +8,7 @@
 #include "other_functions.h"
 #include "preprocessor.h"
 #include "macro_table.h"
+#include <stdbool.h>
 
 int main(int argc, char *argv[]){
     /*gets a file input and processes it*/

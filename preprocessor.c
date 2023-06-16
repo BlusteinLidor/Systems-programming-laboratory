@@ -10,7 +10,7 @@ Created by לידור on 11/06/2023.
 #include "macro_table.h"
 #include <string.h>
 
-/*@TODO define numbers and add free() to what needed*/
+/*@TODO define numbers*/
 
 bool pre_process(char *file_name){
     int index = 0, str_num = 0;
@@ -45,47 +45,54 @@ bool pre_process(char *file_name){
         return false;
     }
 
-    while(fgets(curr_line, MAX_LINE_LENGTH, am_file)){
+    while(fgets(curr_line, MAX_LINE_LENGTH, as_file)){
+        printf("%s", curr_line);
         index = 0;
         skip_white_char(curr_line, index);
         if(is_empty(curr_line[index])){
             continue;
         }
-        str_num = string_num(curr_line, delim);
+        /*str_num = string_num(curr_line, delim);*/
         split_string = strings(curr_line, delim);
-
         /*if the macro is defined already, print in to the file*/
         if(get_macro_content_from_table(m_table, split_string[0]) != NULL){
+            printf("already declared mcro\n");
             fputs(get_macro_content_from_table(m_table, split_string[0]), am_file);
         }
-        /*if the macro is going to be defined here (mcr)*/
-        else if(strcmp(split_string[0], "mcr") == 0){
+            /*if the macro is going to be defined here (mcr)*/
+        else if(strcmp(split_string[0], "mcro") == 0){
+            printf("starting mcro decleration\n");
             macro_read = true;
             macro_name = (char *) malloc(sizeof(char) * MAX_MACRO_NAME_SIZE);
             strcpy(macro_name, split_string[1]);
+            printf("macro name is: %s\n", macro_name);
             new_m = new_macro(macro_name, "");
             add_macro_to_table(m_table, new_m);
         }
-        /*if macro definition is ending (endmcr)*/
-        else if(strcmp(split_string[0], "endmcr") == 0){
+            /*if macro definition is ending (endmcr)*/
+        else if(strcmp(split_string[0], "endmcro") == 0){
+            printf("ending mcro decleration\n");
             macro_read = false;
         }
-        /*if inside the macro definition*/
+            /*if inside the macro definition*/
         else if(macro_read == true){
             char *macro_update = str_cat(get_macro_content_from_table(
                     m_table, macro_name), curr_line);
+            printf("inside mcro decleration\n");
+            printf("macro content is: %s\n", get_macro_content_from_table(
+                    m_table, macro_name));
+            printf("updated macro content is: %s\n", macro_update);
             update_macro_content(m_table, macro_name, macro_update);
-            free(macro_update);
         }
-        /*if regular line - add line to file*/
+
+            /*if regular line - add line to file*/
         else{
             fputs(curr_line, am_file);
         }
         free_string_p(split_string, str_num);
     }
 
-    /*EOF
-    @TODO add a free_m_table function*/
+    /*EOF*/
     free_macro_table(m_table);
     fclose(am_file);
     fclose(as_file);

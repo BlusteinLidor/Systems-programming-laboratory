@@ -31,9 +31,10 @@ bool is_empty(char c){
 int string_num(char *str, char *delim){
     int count = 0;
     char *temp;
+    char *copy = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
+    strcpy(copy, str);
 
-    temp = strtok(str, delim);
-
+    temp = strtok(copy, delim);
     while(temp != NULL){
         count++;
         temp = strtok(NULL, delim);
@@ -43,28 +44,38 @@ int string_num(char *str, char *delim){
 }
 
 char **strings(char *string, char *delim){
+    int str_num = 0, i = 0;
     char *token;
-    char *temp = (char *) malloc(sizeof(char ) * MAX_LINE_LENGTH);
-    int str_num = string_num(string, delim), i = 0;
-    char **strings = malloc(sizeof(char *) * str_num);
+    char **strings;
+    char *copy = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
+    char *temp = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
+    strcpy(copy, string);
+    str_num = string_num(copy, delim);
+    strings = malloc(sizeof(char *) * str_num);
     if(strings == NULL){
         free(strings);
+        free(temp);
+        free(copy);
         return NULL;
     }
 
-    token = strtok(string, delim);
+    token = strtok(copy, delim);
 
     while(token != NULL && i < str_num){
         strcpy(temp, token);
-        /*temp = strdup(token);*/
         strings[i] = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
         if(strings[i] == NULL){
             free(strings[i]);
             free(strings);
+            free(temp);
+            free(copy);
             return NULL;
         }
         strcpy(strings[i++], temp);
+        token = strtok(NULL, delim);
     }
+    free(temp);
+    free(copy);
     return strings;
 }
 
