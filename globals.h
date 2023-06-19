@@ -8,9 +8,11 @@
 #define MAX_LINE_LENGTH 81
 #define MEMORY_SIZE 1024
 #define IC_INIT_VALUE 100
-#define LABEL_MAX_SIZE 31
+#define MAX_ERROR_LINE_SIZE 201
+#define MAX_LABEL_SIZE 31
 #define MAX_MACRO_NAME_SIZE 31
 #define TABLE_SIZE 256
+#define MAX_NUM_ARR_SIZE 81
 
 /* defines the registers and an option for not-register */
 typedef enum registers{
@@ -48,10 +50,10 @@ typedef enum op_code{
 
 /* defines the symbol options */
 typedef enum symbol{
-    ENTRY_SYMBOL,
-    DATA_SYMBOL,
-    EXTERN_SYMBOL,
-    CODE_SYMBOL
+    code_symbol,
+    data_symbol,
+    entry_symbol,
+    extern_symbol
 } symbol;
 
 typedef struct line_content{
