@@ -7,79 +7,79 @@
 #include <string.h>
 #include "globals.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 //@TODO change to symbol
-macro_table *new_macro_table(void){
+symbol_table *new_symbol_table(void){
     int i = 0;
-    /* allocating memory for the m_table */
-    macro_table *m_table = malloc(sizeof(macro_table));
+    /* allocating memory for the s_table */
+    symbol_table *s_table = malloc(sizeof(symbol_table));
     /* allocating memory for the individual macros */
-    m_table->macros = malloc(sizeof(macro) * TABLE_SIZE);
-    /* initializing the individual macros to NULL */
+    s_table->symbols = malloc(sizeof(symbol) * TABLE_SIZE);
+    /* initializing the individual symbols to NULL */
     for(; i < TABLE_SIZE; i++){
-        m_table->macros[i] = NULL;
+        s_table->symbols[i] = NULL;
     }
     /* first free index initialized to 0 */
-    m_table->free_index = 0;
+    s_table->free_index = 0;
 
-    return m_table;
+    return s_table;
 }
 
-macro *new_macro(char *macro_name, char *macro_content){
-    macro *new_m = malloc(sizeof(macro));
-    new_m->macro_name = malloc(strlen(macro_name));
-    new_m->macro_content = malloc(strlen(macro_content));
-    strcpy(new_m->macro_name, macro_name);
-    strcpy(new_m->macro_content, macro_content);
+symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type symbol_t){
+    symbol *new_s = malloc(sizeof(symbol));
+    new_s->symbol_name = malloc(strlen(symbol_name));
+    new_s->symbol_address = symbol_address;
+    strcpy(new_s->symbol_name, symbol_name);
 
-    return new_m;
+    return new_s;
 }
 
-void add_macro_to_table(macro_table *m_table, macro *mcr){
-    m_table->macros[m_table->free_index] = mcr;
-    m_table->free_index++;
+void add_symbol_to_table(symbol_table *s_table, symbol *smbl){
+    s_table->symbols[s_table->free_index] = smbl;
+    s_table->free_index++;
 }
 
-char *get_macro_content_from_table(macro_table *m_table, char *macro_name){
+int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
-    for(; i < m_table->free_index; i++){
-        if(strcmp(m_table->macros[i]->macro_name, macro_name) == 0){
-            return m_table->macros[i]->macro_content;
+    for(; i < s_table->free_index; i++){
+        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
+            return s_table->symbols[i]->symbol_address;
         }
-        return NULL;
+        return -1;
     }
 }
 
-void update_macro_content(macro_table *m_table, char *macro_name, char *macro_update){
+symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
-    for(; i < m_table->free_index; i++){
-        if(strcmp(m_table->macros[i]->macro_name, macro_name) == 0){
-            m_table->macros[i]->macro_content = macro_update;
+    for(; i < s_table->free_index; i++){
+        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
+            return s_table->symbols[i]->symbol_t;
         }
+        return error_symbol;
     }
 }
 
-void free_macro_table(macro_table *m_table){
+void free_symbol_table(symbol_table *s_table){
     int i = 0;
-    macro *curr_macro;
-    for(; i < m_table->free_index; i++){
-        if((curr_macro = m_table->macros[i]) != NULL){
-            free(curr_macro->macro_name);
-            free(curr_macro->macro_content);
-            free(curr_macro);
+    symbol *curr_symbol;
+    for(; i < s_table->free_index; i++){
+        if((curr_symbol = s_table->symbols[i]) != NULL){
+            free(curr_symbol->symbol_name);
+            free(curr_symbol);
         }
     }
-    m_table->free_index = 0;
-    free(m_table->macros);
-    free(m_table);
+    s_table->free_index = 0;
+    free(s_table->symbols);
+    free(s_table);
 }
 
-void print_macro_table(macro_table *m_table){
+void print_symbol_table(symbol_table *s_table){
     int i = 0;
-    macro *curr_macro;
-    for(; i < m_table->free_index; i++){
-        if((curr_macro = m_table->macros[i]) != NULL){
-            printf("macro #%d = %s:\n%s\n", (i+1), curr_macro->macro_name, curr_macro->macro_content);
+    symbol *curr_symbol;
+    for(; i < s_table->free_index; i++){
+        if((curr_symbol = s_table->symbols[i]) != NULL){
+            printf("symbol #%d of type %d = %s: %d\n", (i+1), curr_symbol->symbol_t, curr_symbol->symbol_name, ((curr_symbol->symbol_address) + 100));
         }
     }
 }

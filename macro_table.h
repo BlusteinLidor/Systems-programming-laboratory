@@ -29,6 +29,8 @@ void free_macro_table(macro_table *m_table);
 
 void print_macro_table(macro_table *m_table);
 
+/* @TODO check if needed to add delete_macro function */
+
 
 
 #endif /*FINAL_PROJECT_MACRO_TABLE_H*/

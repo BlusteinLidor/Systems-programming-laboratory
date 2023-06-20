@@ -14,6 +14,17 @@
 #define TABLE_SIZE 256
 #define MAX_NUM_ARR_SIZE 81
 
+typedef struct im_or_dir_m_word{
+    unsigned int ARE: 2;
+    unsigned int operand: 10;
+} im_or_dir_m_word;
+
+typedef struct im_reg_m_word{
+    unsigned int ARE: 2;
+    unsigned int target_reg: 5;
+    unsigned int source_reg: 5;
+} im_reg_m_word;
+
 /* defines the registers and an option for not-register */
 typedef enum registers{
     r0,
@@ -48,13 +59,26 @@ typedef enum op_code{
     op_error
 } op_code;
 
+typedef struct data_m_word{
+    unsigned int data_or_string: 12;
+} data_m_word;
+
+typedef struct code_m_word{
+    char *label;
+    union c_word{
+        im_or_dir_m_word *im_dir;
+        im_reg_m_word *im_reg;
+    } c_word;
+} code_m_word;
+
 /* defines the symbol options */
-typedef enum symbol{
+typedef enum symbol_type{
     code_symbol,
     data_symbol,
     entry_symbol,
-    extern_symbol
-} symbol;
+    extern_symbol,
+    error_symbol
+} symbol_type;
 
 typedef struct line_content{
     char *filename;

@@ -5,24 +5,36 @@
 #ifndef FINAL_PROJECT_SYMBOL_TABLE_H
 #define FINAL_PROJECT_SYMBOL_TABLE_H
 
+#include "globals.h"
+
 //@TODO change to symbol
+typedef struct symbol{
+    char *symbol_name;
+    int symbol_address;
+    symbol_type symbol_t;
+} symbol;
+
 typedef struct symbol_table{
-    symbol **macros;
+    symbol **symbols;
     unsigned int free_index;
 } symbol_table;
 
-macro_table *new_macro_table(void);
 
-macro *new_macro(char *macro_name, char *macro_content);
 
-void add_macro_to_table(macro_table *m_table, macro *mcr);
+symbol_table *new_symbol_table(void);
 
-char *get_macro_content_from_table(macro_table *m_table, char *macro_name);
+symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type symbol_t);
 
-void update_macro_content(macro_table *m_table, char *macro_name, char *macro_update);
+void add_symbol_to_table(symbol_table *s_table, symbol *smbl);
 
-void free_macro_table(macro_table *m_table);
+int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name);
 
-void print_macro_table(macro_table *m_table);
+symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name);
+
+void free_symbol_table(symbol_table *s_table);
+
+void print_symbol_table(symbol_table *s_table);
+
+/* @TODO check if needed to add delete_symbol function */
 
 #endif //FINAL_PROJECT_SYMBOL_TABLE_H

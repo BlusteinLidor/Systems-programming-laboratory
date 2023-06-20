@@ -48,7 +48,8 @@ typedef struct ast{
         ast_empty_line,
         ast_comment_line,
         ast_directive,
-        ast_instruction
+        ast_instruction,
+        ast_error_line
     } ast_line_option;
 
     char label[MAX_LABEL_SIZE];
