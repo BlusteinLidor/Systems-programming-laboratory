@@ -33,7 +33,47 @@ bool first_pass_process(unsigned int *ic, unsigned int *dc, line_content line_c,
                 if(as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
                     /* @TODO add encode string function */
                 }
+                else{
+                    /* @TODO add encode data function */
+                }
+            }
+            else if(as_tree->ast_dir_or_inst.directive.directive_type == dir_entry_type ||
+            as_tree->ast_dir_or_inst.directive.directive_type == dir_extern_type){
+                /* @TODO print error - .entry or .extern shouldn't be in label definition */
+                return false;
             }
         }
+        if(as_tree->ast_line_option == ast_instruction){
+            sym = new_symbol(as_tree->label, *ic, code_symbol);
+            add_symbol_to_table(s_table, sym);
+            /* @TODO return encode instruction function */
+        }
     }
+    /* if it's not a label declaration */
+    else{
+        if(as_tree->ast_line_option == ast_directive){
+            if(as_tree->ast_dir_or_inst.directive.directive_type == dir_data_type ||
+            as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
+                if(as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
+                    /* @TODO add encode string function */
+                }
+                else{
+                    /* @TODO add encode data function */
+                }
+            }
+            else if(as_tree->ast_dir_or_inst.directive.directive_type == dir_entry_type){
+                return true;
+            }
+            else if(as_tree->ast_dir_or_inst.directive.directive_type == dir_extern_type){
+                sym = new_symbol(as_tree->ast_dir_or_inst.directive.label, 0, extern_symbol);
+                add_symbol_to_table(s_table, sym);
+                /* @TODO add encode instruction function */
+                return true;
+            }
+        }
+        else if(as_tree->ast_line_option == ast_instruction){
+            /* @TODO return encode instruction function */
+        }
+    }
+    return true;
 }
