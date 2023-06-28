@@ -105,7 +105,8 @@
 				10,
 				11,
 				13,
-				14
+				14,
+				15
 			]
 		},
 		{
@@ -208,6 +209,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "ast.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "second_pass.h",
 			"sourceGroupIndex" : 0
 		}
 	],

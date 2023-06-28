@@ -20,7 +20,7 @@ typedef enum{
     error
 } operand_type_num;
 
-typedef enum{
+/*typedef enum{
     inst_mov,
     inst_cmp,
     inst_add,
@@ -41,7 +41,7 @@ typedef enum{
 typedef enum{
     inst_rts,
     inst_stop
-} c_inst_set;
+} c_inst_set;*/
 
 typedef struct ast{
     enum{
@@ -75,7 +75,7 @@ typedef struct ast{
         } directive;
 
         struct{
-            a_inst_set a_inst_arr;
+            op_code inst_name;
             union{
                 struct{
                     operand_type_num inst_num_arr[2];
