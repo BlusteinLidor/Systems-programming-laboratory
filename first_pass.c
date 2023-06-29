@@ -2,7 +2,7 @@
 // Created by לידור on 11/06/2023.
 //
 
-#include "globals.h"
+#include "global_att.h"
 #include "other_functions.h"
 #include "symbol_table.h"
 #include "ast.h"

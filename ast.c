@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include "globals.h"
+#include "global_att.h"
 #include "ast.h"
 
 void get_dir(){

@@ -5,7 +5,7 @@
 #ifndef FINAL_PROJECT_SYMBOL_TABLE_H
 #define FINAL_PROJECT_SYMBOL_TABLE_H
 
-#include "globals.h"
+#include "global_att.h"
 
 //@TODO change to symbol
 typedef struct symbol{

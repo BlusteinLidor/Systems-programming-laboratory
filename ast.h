@@ -5,7 +5,7 @@
 #ifndef FINAL_PROJECT_AST_H
 #define FINAL_PROJECT_AST_H
 
-#include "globals.h"
+#include "global_att.h"
 
 union operand_type{
     int immediate;

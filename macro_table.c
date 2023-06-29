@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "macro_table.h"
-#include "globals.h"
+#include "global_att.h"
 #include <stdio.h>
 
 macro_table *new_macro_table(void){

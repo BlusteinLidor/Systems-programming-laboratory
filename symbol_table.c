@@ -5,7 +5,7 @@
 #include "symbol_table.h"
 #include <stdlib.h>
 #include <string.h>
-#include "globals.h"
+#include "global_att.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "globals.h"
+#include "global_att.h"
 
 int skip_white_char(char *string, int index){
     for(; string[index] && isspace(string[index]); index++);

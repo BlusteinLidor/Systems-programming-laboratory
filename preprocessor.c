@@ -5,7 +5,7 @@ Created by לידור on 11/06/2023.
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "globals.h"
+#include "global_att.h"
 #include "other_functions.h"
 #include "macro_table.h"
 #include <string.h>

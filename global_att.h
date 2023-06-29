@@ -2,8 +2,8 @@
  Created by לידור on 07/06/2023.
 */
 /*@TODO Check if ifndef needed*/
-#ifndef FINAL_PROJECT_GLOBALS_H
-#define FINAL_PROJECT_GLOBALS_H
+#ifndef FINAL_PROJECT_GLOBAL_ATT_H
+#define FINAL_PROJECT_GLOBAL_ATT_H
 
 #define MAX_LINE_LENGTH 81
 #define MEMORY_SIZE 1024
@@ -13,6 +13,8 @@
 #define MAX_MACRO_NAME_SIZE 31
 #define TABLE_SIZE 256
 #define MAX_NUM_ARR_SIZE 81
+#define FAIL 0
+#define SUCCESS 1
 
 typedef struct im_or_dir_m_word{
     unsigned int ARE: 2;
@@ -81,7 +83,7 @@ typedef enum symbol_type{
 } symbol_type;
 
 typedef struct line_content{
-    char *filename;
+    char *file_name;
     char *content;
     int line_number;
 } line_content;
@@ -90,4 +92,4 @@ typedef struct line_content{
 
 
 
-#endif /*FINAL_PROJECT_GLOBALS_H*/
+#endif /*FINAL_PROJECT_GLOBAL_ATT_H*/
