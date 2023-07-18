@@ -129,7 +129,7 @@
 	[
 		{
 			"backtrace" : 1,
-			"path" : "globals.h",
+			"path" : "global_att.h",
 			"sourceGroupIndex" : 0
 		},
 		{
