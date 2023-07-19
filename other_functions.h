@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "global_att.h"
 
+/* @TODO change the functions here to only the signature */
+
 int skip_white_char(char *string, int index){
     for(; string[index] && isspace(string[index]); index++);
     return index;
@@ -74,3 +76,5 @@ void free_string_p(char **strings, int string_num){
     }
     free(strings);
 }
+
+bool is_label(char *str);

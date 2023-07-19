@@ -88,3 +88,35 @@ void free_string_p(char **strings, int string_num){
     free(strings);
 }
 
+bool is_label(char *str){
+    char label[MAX_LABEL_SIZE];
+    int i = 0;
+    char *not_label_names[] = {"r0", "r1", "r2", "r3", "r4",
+                               "r5", "r6", "r7", "and", "mov",
+                               "cmp", "add", "sub", "not",
+                               "clr", "lea","inc", "dec",
+                               "jmp", "bne", "red", "prn",
+                               "jsr", "rts", "stop"};
+    int nln_len = 25;
+    int str_len = strlen(str);
+    if(str_len > MAX_LABEL_SIZE){
+        return false;
+    }
+    if(str[str_len - 1] == ':'){
+        strncpy(label, str, str_len - 1);
+        label[str_len] = '\0';
+    }
+    else{
+        strncpy(label, str, str_len);
+        label[str_len] = '\0';
+    }
+    if(!isalpha(label[0])){
+        return false;
+    }
+    for(i = 0; i < nln_len; i++){
+        if(strcmp(label, not_label_names[i]) == 0){
+            return false;
+        }
+    }
+    return true;
+}

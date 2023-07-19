@@ -140,11 +140,41 @@ void get_data(char *line_content, ast *as_tree){
             }
         }
     }
-    while(*num_end != '\n' || *num_end != EOF || *num_end != '\0');
+    while(*num_end != '\n' && *num_end != EOF && *num_end != '\0');
 }
 
-void get_extern(){
+void get_extern(char *line_content, ast *as_tree){
+    char *tmp = NULL;
+    int len = 0;
+    int index = 0;
+    index = skip_white_char(line_content, index);
+    if(as_tree->label[0] != '\0'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Name already used");
+        return;
+    }
+    for(len = 0; line_content[index + len] != '\n' && line_content[index + len] != EOF
+    && line_content[index + len] != '\0' && !(isspace(line_content[index + len])); len++);
+    tmp = (char *)malloc(sizeof(char) * len);
+    strncpy(tmp, line_content + index, len);
+    tmp[len] = '\0';
+    index += len;
 
+    if(!is_label(tmp)){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Not a valid label");
+        free(tmp);
+        return;
+    }
+    strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
+    free(tmp);
+    index = skip_white_char(line_content, index);
+    if(line_content[index] != '\n' && line_content[index] != EOF
+       && line_content[index] != '\0'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "There are extra characters after label name");
+        return;
+    }
 }
 
 void get_entry(){
