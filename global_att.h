@@ -63,6 +63,12 @@ typedef enum op_code{
     op_error
 } op_code;
 
+typedef struct op_code_l{
+    char *op_name;
+    enum op_code;
+} op_code_l;
+
+
 typedef struct data_m_word{
     unsigned int data_or_string: 12;
 } data_m_word;

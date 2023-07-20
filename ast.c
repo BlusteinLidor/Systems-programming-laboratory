@@ -11,16 +11,19 @@
 #include "ast.h"
 #include "other_functions.h"
 #define BASE_TEN 10
+#define DATA_LENGTH 4
+#define STRING_LENGTH 6
+#define ENTRY_LENGTH 5
+#define EXTERN_LENGTH 6
+
+/* @TODO make index a pointer (*index) */
 
 
-void get_inst(char *line_content, int *index, ast *as_tree){
+void get_inst(char *line_content, ast *as_tree){
+    int index = 0;
     int len;
     char *comm = NULL;
-    typedef struct cmd{
-        char *inst_name;
-        op_code inst_code;
-    } cmd;
-    cmd cmds[] = {
+    op_code_l code_l[] = {
             {"mov", op_mov},
             {"cmp", op_cmp},
             {"add", op_add},
@@ -36,14 +39,14 @@ void get_inst(char *line_content, int *index, ast *as_tree){
             {"prn", op_prn},
             {"jsr", op_jsr},
             {"rts", op_rts},
-            {"stop", op_stop},
+            {"stop", op_stop}
     };
-    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
-    && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
+    for(len = 0; line_content[index + len] != '\0' && line_content[index + len] != '\n'
+    && line_content[index + len] != EOF && !(isspace(line_content[index + len])); len++);
     comm = malloc(sizeof(char) * len);
-    strncpy(comm, line_content + *index, len);
+    strncpy(comm, line_content + index, len);
     comm[len] = '\0';
-    (*index) += len;
+    (index) += len;
 
     as_tree->ast_line_option = ast_instruction;
 
@@ -177,14 +180,100 @@ void get_extern(char *line_content, ast *as_tree){
     }
 }
 
-void get_entry(){
+void get_entry(char *line_content, ast *as_tree){
+    char *tmp = NULL;
+    int len = 0;
+    int index = 0;
+    index = skip_white_char(line_content, index);
+    if(as_tree->label[0] != '\0'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Name already used in label");
+        return;
+    }
+    if(line_content + index == '\n' || line_content + index == EOF
+    || line_content + index == '\0'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Must be named");
+        return;
+    }
+    for(len = 0; line_content[index + len] != '\n' && line_content[index + len] != EOF
+                 && line_content[index + len] != '\0' && !(isspace(line_content[index + len])); len++);
+    tmp = (char *)malloc(sizeof(char) * len);
+    strncpy(tmp, line_content + index, len);
+    tmp[len] = '\0';
+    index += len;
 
+    if(!is_label(tmp)){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Not a valid label");
+        free(tmp);
+        return;
+    }
+    strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
+    free(tmp);
+    index = skip_white_char(line_content, index);
+    if(line_content[index] != '\n' && line_content[index] != EOF
+       && line_content[index] != '\0'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "There are extra characters after label name");
+        return;
+    }
 }
 
-void get_operand(){
-
+void get_opcode(char *line_content, ast *as_tree){
+    char *cmd = NULL;
+    int len = 0;
+    int index = 0;
+    op_code_l code_l[] = {
+            {"mov", op_mov},
+            {"cmp", op_cmp},
+            {"add", op_add},
+            {"sub", op_sub},
+            {"not", op_not},
+            {"clr", op_clr},
+            {"lea", op_lea},
+            {"inc", op_inc},
+            {"dec", op_dec},
+            {"jmp", op_jmp},
+            {"bne", op_bne},
+            {"red", op_red},
+            {"prn", op_prn},
+            {"jsr", op_jsr},
+            {"rts", op_rts},
+            {"stop", op_stop}
+    };
+    for(len = 0; line_content[index + len] != '\0' && line_content[index + len] != '\n'
+                 && line_content[index + len] != EOF && !(isspace(line_content[index + len])); len++);
+    cmd = malloc(sizeof(char) * len);
+    strncpy(cmd, line_content + index, len);
+    index += len;
 }
 
-void get_dir(){
-
+void get_dir(char *line_content, ast *as_tree){
+    int index = 1;
+    if(strncmp(line_content + index, "data", DATA_LENGTH) == 0){
+        as_tree->ast_line_option = ast_directive;
+        as_tree->ast_dir_or_inst.directive.directive_type = dir_data_type;
+        index += DATA_LENGTH;
+    }
+    else if(strncmp(line_content + index, "string", STRING_LENGTH) == 0){
+        as_tree->ast_line_option = ast_directive;
+        as_tree->ast_dir_or_inst.directive.directive_type = dir_string_type;
+        index += STRING_LENGTH;
+    }
+    else if(strncmp(line_content + index, "extern", EXTERN_LENGTH) == 0){
+        as_tree->ast_line_option = ast_directive;
+        as_tree->ast_dir_or_inst.directive.directive_type = dir_extern_type;
+        index += EXTERN_LENGTH;
+    }
+    else if(strncmp(line_content + index, "entry", ENTRY_LENGTH) == 0){
+        as_tree->ast_line_option = ast_directive;
+        as_tree->ast_dir_or_inst.directive.directive_type = dir_entry_type;
+        index += ENTRY_LENGTH;
+    }
+    else{
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Dir not found");
+        return;
+    }
 }
