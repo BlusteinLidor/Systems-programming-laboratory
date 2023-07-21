@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//@TODO change to symbol
 symbol_table *new_symbol_table(void){
     int i = 0;
     /* allocating memory for the s_table */

@@ -120,3 +120,31 @@ bool is_label(char *str){
     }
     return true;
 }
+
+char num_to_base_64(int val){
+    char tmp = 0;
+    /* capital letters */
+    if((val & 63) >= 0 || (val & 63) <= 25){
+        tmp = (val & 63) + 65;
+    }
+    /* small letters */
+    else if((val & 63) >= 26 || (val & 63) <= 51){
+        tmp = (val & 63) + 71;
+    }
+    /* numbers */
+    else if((val & 63) >= 52 || (val & 63) <= 61){
+        tmp = (val & 63) - 4;
+    }
+    /* signs */
+    else{
+        /* + sign */
+        if((val & 63) == 62){
+            tmp = 43;
+        }
+        /* / sign */
+        else{
+            tmp = 47;
+        }
+    }
+    return tmp;
+}

@@ -78,3 +78,4 @@ void free_string_p(char **strings, int string_num){
 }
 
 bool is_label(char *str);
+char num_to_base_64(int val);

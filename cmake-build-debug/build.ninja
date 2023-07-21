@@ -103,6 +103,12 @@ build CMakeFiles/final_project.dir/symbol_table.c.obj: C_COMPILER__final_project
   OBJECT_DIR = CMakeFiles\final_project.dir
   OBJECT_FILE_DIR = CMakeFiles\final_project.dir
 
+build CMakeFiles/final_project.dir/file_types.c.obj: C_COMPILER__final_project_Debug D$:/JetBrains/CLion$ 2023.1.2/Projects/final_project/file_types.c || cmake_object_order_depends_target_final_project
+  DEP_FILE = CMakeFiles\final_project.dir\file_types.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu90
+  OBJECT_DIR = CMakeFiles\final_project.dir
+  OBJECT_FILE_DIR = CMakeFiles\final_project.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target final_project
@@ -111,7 +117,7 @@ build CMakeFiles/final_project.dir/symbol_table.c.obj: C_COMPILER__final_project
 #############################################
 # Link the executable final_project.exe
 
-build final_project.exe: C_EXECUTABLE_LINKER__final_project_Debug CMakeFiles/final_project.dir/main.c.obj CMakeFiles/final_project.dir/preprocessor.c.obj CMakeFiles/final_project.dir/first_pass.c.obj CMakeFiles/final_project.dir/second_pass.c.obj CMakeFiles/final_project.dir/macro_table.c.obj CMakeFiles/final_project.dir/ast.c.obj CMakeFiles/final_project.dir/output_files.c.obj CMakeFiles/final_project.dir/other_functions.c.obj CMakeFiles/final_project.dir/symbol_table.c.obj
+build final_project.exe: C_EXECUTABLE_LINKER__final_project_Debug CMakeFiles/final_project.dir/main.c.obj CMakeFiles/final_project.dir/preprocessor.c.obj CMakeFiles/final_project.dir/first_pass.c.obj CMakeFiles/final_project.dir/second_pass.c.obj CMakeFiles/final_project.dir/macro_table.c.obj CMakeFiles/final_project.dir/ast.c.obj CMakeFiles/final_project.dir/output_files.c.obj CMakeFiles/final_project.dir/other_functions.c.obj CMakeFiles/final_project.dir/symbol_table.c.obj CMakeFiles/final_project.dir/file_types.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\final_project.dir
