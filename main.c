@@ -11,6 +11,8 @@
 #include <stdbool.h>
 #include "symbol_table.h"
 #include "ast.h"
+#include "first_pass.h"
+#include "file_types.h"
 
 bool file_assem(char *file_name);
 
@@ -41,12 +43,13 @@ bool file_assem(char *file_name){
     int ic = 0;
     int dc = 0;
     char *am_file_name = NULL;
-    FILE *am_file = NULL;
+    FILE *file_orig = NULL;
     char curr_line[MAX_LINE_LENGTH];
     symbol_table *s_table = NULL;
     ast as_tree;
     line_content line_c;
-    im_or_dir_m_word im_dir[MEMORY_SIZE] = {0};
+    im_or_dir_m_word d_word[MEMORY_SIZE] = {0};
+    im_or_dir_m_word c_word[MEMORY_SIZE] = {0};
     bool entry_read = false;
     bool extern_read = false;
     bool success_read = true;
@@ -60,8 +63,8 @@ bool file_assem(char *file_name){
     }
 
     am_file_name = str_cat(file_name, ".am");
-    am_file = fopen(am_file_name, "r");
-    if(am_file == NULL){
+    file_orig = fopen(am_file_name, "r");
+    if(file_orig == NULL){
         printf("Error opening file %s\n", am_file_name);
         free(am_file_name);
         return FAIL;
@@ -72,24 +75,61 @@ bool file_assem(char *file_name){
     line_c.file_name = am_file_name;
     line_c.content = curr_line;
     for(line_c.line_number = 0; fgets(curr_line, MAX_LINE_LENGTH,
-                                      am_file) != NULL; line_c.line_number++){
+                                      file_orig) != NULL; line_c.line_number++){
         /* check if the line exceeds the line length */
-        if(strchr(curr_line, '\n') == NULL && !feof(am_file)){
-            /* @TODO print error message - line is too long */
+        if(strchr(curr_line, '\n') == NULL && !feof(file_orig)){
+            print_error(&line_c, "Line is too long. max line size should be 80.");
             success_read = FAIL;
         }
         else{
             /* as_tree = @TODO add to ast.c a function which
              * @TODO makes an ast from the current line*/
             if(as_tree.ast_line_option == ast_error_line){
-                /* @TODO print error message - ast error */
+                print_error(&line_c, as_tree.ast_error);
                 success_read = FAIL;
             }
             else{
                 if(as_tree.ast_line_option == ast_directive){
-
+                    if(as_tree.ast_dir_or_inst.directive.directive_type == dir_entry_type){
+                        entry_read = true;
+                    }
+                    else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_extern_type){
+                        extern_read = true;
+                    }
+                    success_read = first_pass_process_line(&ic, &dc, line_c, s_table, d_word, c_word, &as_tree);
                 }
             }
+        }
+        update_data_sym_address(s_table, ic);
+
+        /* second pass */
+        rewind(file_orig);
+        if(success_read){
+            for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
+                                              file_orig) != NULL; line_c.line_number++){
+                /* as_tree = @TODO add to ast.c a function which
+             * @TODO makes an ast from the current line*/
+                /* success_read = @TODO add second pass line process */
+            }
+            /* @TODO add second pass label encoding */
+        }
+        if(ic + dc > MEMORY_SIZE - IC_INIT_VALUE){
+            print_error(&line_c, "Memory size is too small");
+            success_read = false;
+        }
+        if(success_read){
+            file_type_ob(file_name, c_word, d_word, ic, dc);
+            if(entry_read){
+                file_type_ent(file_name, s_table);
+            }
+            if(extern_read){
+                file_type_ext(file_name, s_table, c_word, ic);
+            }
+            free(am_file_name);
+            fclose(file_orig);
+            free_symbol_table(s_table);
+            /* @TODO add free_c_word (free_code_image) method */
+            return true;
         }
     }
 

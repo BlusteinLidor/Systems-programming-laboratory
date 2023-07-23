@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "global_att.h"
+#include "symbol_table.h"
 
 /* @TODO change the functions here to only the signature */
 
@@ -79,3 +80,5 @@ void free_string_p(char **strings, int string_num){
 
 bool is_label(char *str);
 char num_to_base_64(int val);
+void print_error(line_content *line_c, char *format, ...);
+void update_data_sym_address(symbol_table *s_table, unsigned int ic);

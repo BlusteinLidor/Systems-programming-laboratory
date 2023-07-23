@@ -62,9 +62,8 @@
 				5,
 				6,
 				7,
-				8,
-				12,
-				16
+				11,
+				15
 			]
 		}
 	],
@@ -102,12 +101,13 @@
 			"sourceIndexes" : 
 			[
 				0,
+				8,
 				9,
 				10,
-				11,
+				12,
 				13,
 				14,
-				15,
+				16,
 				17
 			]
 		},
@@ -122,9 +122,8 @@
 				5,
 				6,
 				7,
-				8,
-				12,
-				16
+				11,
+				15
 			]
 		}
 	],
@@ -169,12 +168,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "ast.c",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "output_files.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -228,6 +221,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "file_types.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "first_pass.h",
 			"sourceGroupIndex" : 0
 		}
 	],

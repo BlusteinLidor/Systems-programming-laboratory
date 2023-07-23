@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "global_att.h"
 #include <stdarg.h>
+#include "symbol_table.h"
 
 int skip_white_char(char *string, int index){
     for(; string[index] && isspace(string[index]); index++);
@@ -147,4 +148,32 @@ char num_to_base_64(int val){
         }
     }
     return tmp;
+}
+
+void print_error(line_content *line_c, char *format, ...){
+    va_list args;
+    va_start(args, format);
+    printf("\033[0;31m");
+    printf("ERROR: ");
+    printf("\033[0m");
+    vprintf(format, args);
+    printf(" in file: ");
+    printf("\033[0;35m");
+    printf("%s", line_c->file_name);
+    printf("\033[0m");
+    printf(" in line: ");
+    printf("\033[0;35m");
+    printf("%d\n", line_c->line_number)l
+    printf("\033[0m");
+    va_end(args);
+}
+
+void update_data_sym_address(symbol_table *s_table, unsigned int ic){
+    int i;
+    for(i = 0; i < TABLE_SIZE; i++){
+        symbol *sym = s_table->symbols[i];
+        if(sym->symbol_t == data_symbol){
+            sym->symbol_address += ic;
+        }
+    }
 }

@@ -3,10 +3,6 @@
 //
 
 #include "file_types.h"
-#include "global_att.h"
-#include <stdio.h>
-#include "other_functions.h"
-#include "symbol_table.h"
 
 
 void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],

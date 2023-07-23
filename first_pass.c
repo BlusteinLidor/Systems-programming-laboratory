@@ -7,7 +7,7 @@
 #include "symbol_table.h"
 #include "ast.h"
 
-bool first_pass_process(unsigned int *ic, unsigned int *dc, line_content line_c,
+bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content line_c,
                         symbol_table *s_table, data_m_word *d_word,
                         code_m_word *c_word, ast *as_tree){
     symbol *sym = NULL;
