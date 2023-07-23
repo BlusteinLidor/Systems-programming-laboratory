@@ -277,3 +277,40 @@ void get_dir(char *line_content, ast *as_tree){
         return;
     }
 }
+
+void get_group_a_op(char *line_content, int *index, ast *as_tree){
+    int len;
+    char *comma;
+    char *op;
+
+    if((comma = strchr(line_content + *index, ',')) == NULL){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Group A operands should have a comma between them");
+        return;
+    }
+    *index = skip_white_char(line_content, *index);
+    if(line_content[*index] == ','){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Command should start with an operand, not a comma");
+        return;
+    }
+    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len]
+    != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
+    && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
+    op = malloc(sizeof(char) * len);
+    strncpy(op, line_content + *index, len);
+    op[len] = '\0';
+    /* as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] =
+     @TODO add analyze_operand function*/
+    if(as_tree->ast_line_option == ast_error_line){
+        strcpy(as_tree->ast_error, "The first operand is not legal");
+        free(op);
+        return;
+    }
+    else{
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0]
+        == immediate){
+            /* @TODO proceed, and check what's needed to add for ast.h */
+        }
+    }
+}
