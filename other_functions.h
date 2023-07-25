@@ -12,8 +12,8 @@
 
 /* @TODO change the functions here to only the signature */
 
-int skip_white_char(char *string, int index){
-    for(; string[index] && isspace(string[index]); index++);
+int *skip_white_char(char *string, int *index){
+    for(; string[*index] && isspace(string[*index]); (*index)++);
     return index;
 }
 

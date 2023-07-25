@@ -11,8 +11,8 @@
 #include <stdarg.h>
 #include "symbol_table.h"
 
-int skip_white_char(char *string, int index){
-    for(; string[index] && isspace(string[index]); index++);
+int *skip_white_char(char *string, int *index){
+    for(; string[*index] && isspace(string[*index]); (*index)++);
     return index;
 }
 
