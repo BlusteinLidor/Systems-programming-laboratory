@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include "symbol_table.h"
 
+
 int *skip_white_char(char *string, int *index){
     for(; string[*index] && isspace(string[*index]); (*index)++);
     return index;
@@ -116,6 +117,15 @@ bool is_label(char *str){
     }
     for(i = 0; i < nln_len; i++){
         if(strcmp(label, not_label_names[i]) == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool all_digit(char *str){
+    for(; *str != '\0'; str++){
+        if(!isdigit(*str)){
             return false;
         }
     }

@@ -16,7 +16,7 @@
 #define ENTRY_LENGTH 5
 #define EXTERN_LENGTH 6
 
-/* @TODO make index a pointer (*index) */
+/* @TODO switch all skip_white_char to SKIP_WHITE_CHAR */
 
 
 void get_inst(char *line_content, int *index, ast *as_tree){
@@ -289,8 +289,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
         strcpy(as_tree->ast_error, "Command should start with an operand, not a comma");
         return;
     }
-    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len]
-    != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
+    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
     && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
     op = malloc(sizeof(char) * len);
     strncpy(op, line_content + *index, len);
@@ -310,8 +309,124 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
     }
 }
 
+operand_type_num check_op(char *op, ast *as_tree){
+    int i;
+    int val;
+    char *num_end;
+    char *num_val;
+    char *index;
+
+    if(strlen(op) == 0){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "The operand should have a name");
+        return error;
+    }
+    if(all_digit(op) || op[0] == '-'){
+        if(all_digit(op)){
+            num_val = &op[0];
+        }
+        else if(all_digit(++op)){
+            num_val = &op[0];
+        }
+        val = strtol(num_val, &num_end, 10);
+        if(*num_end != '\0'){
+            as_tree->ast_line_option = ast_error_line;
+            strcpy(as_tree->ast_error, "Not a valid number");
+            return error;
+        }
+        if(val >= -(1 << 11) && val < (1 << 11)){
+            return immediate;
+        }
+        else{
+            as_tree->ast_line_option = ast_error_line;
+            strcpy(as_tree->ast_error, "Number is out of bounds");
+            return error;
+        }
+    }
+    else if(op[0] == '@' && strlen(op) == 3 && op[1] == 'r' && isdigit(op[2])){
+        int register_num = op[2] - '0';
+        if(register_num >= 0 && register_num <= 7){
+            return regstr;
+        }
+        else{
+            as_tree->ast_line_option = ast_error_line;
+            strcpy(as_tree->ast_error, "Not a valid register number");
+            return error;
+        }
+    }
+    else if(is_label(op)){
+        return label;
+    }
+    else{
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Not a valid operand");
+        return error;
+    }
+
+}
+
 /* @TODO add get_group_b_op function */
 
-/* @TODO add check_op (analayze) function */
-
 /* @TODO add line_to_ast function*/
+
+ast line_to_ast(char *line_c){
+    int i = 0, index = 0;
+    ast as_tree = {0};
+    char *pointer, *tmp = NULL;
+
+    SKIP_WHITE_CHAR(line_c, i)
+    pointer = (char *)(line_c + i);
+    if(line_c[i] == '\0' || line_c[i] == EOF || line_c[i] == '\n'){
+        as_tree.ast_line_option = ast_empty_line;
+        return as_tree;
+    }
+    else if(line_c[i] == ';'){
+        as_tree.ast_line_option = ast_comment_line;
+        return as_tree;
+    }
+    SKIP_WHITE_CHAR(line_c, i)
+    if((pointer = strchr(line_c, ':')) != NULL){
+        index = pointer - (line_c + i);
+        tmp = malloc(sizeof(char) * index);
+        strncpy(tmp, line_c + i, index);
+        tmp[index] = '\0';
+        if(is_label(tmp)){
+            strcpy(as_tree.label, tmp);
+            free(tmp);
+            index += (i + 1);
+        }
+        else{
+            as_tree.ast_line_option = ast_error_line;
+            strcpy(as_tree.ast_error, "Label is not valid");
+            free(tmp);
+            return as_tree;
+        }
+    }
+    else{
+        as_tree.label[0] = '\0';
+    }
+
+    SKIP_WHITE_CHAR(line_c, index)
+    if(line_c[index] == '.'){
+        get_dir(line_c, &index, &as_tree);
+        SKIP_WHITE_CHAR(line_c, index)
+        if(as_tree.ast_line_option = ast_error_line){
+            return as_tree;
+        }
+        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_string_type){
+            get_string(line_c, &index, &as_tree);
+        }
+        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_data_type){
+            get_data(line_c, &index, &as_tree);
+        }
+        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_entry_type){
+            get_entry(line_c, &index, &as_tree);
+        }
+        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_extern_type){
+            get_extern(line_c, &index, &as_tree);
+        }
+    }
+    else{
+        /* @TODO continue the function */
+    }
+}
