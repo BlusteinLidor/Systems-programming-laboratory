@@ -16,6 +16,7 @@ union operand_type{
 typedef enum{
     immediate,
     label,
+    par_label,
     regstr,
     error
 } operand_type_num;
@@ -70,7 +71,7 @@ typedef struct ast{
                     int int_arr_size;
                 } num_arr;
                 char str[MAX_LINE_LENGTH];
-                char label[MAX_LINE_LENGTH];
+                char label[MAX_LABEL_SIZE];
             };
         } directive;
 
@@ -83,7 +84,14 @@ typedef struct ast{
                 } a_set_op_codes;
                 struct{
                     operand_type_num inst_num;
-                    union operand_type inst;
+                    union{
+                        struct{
+                            char label[MAX_LABEL_SIZE + 1];
+                            operand_type_num inst_num_arr[2];
+                            union operand_type inst_arr[2];
+                        } b_set_label;
+                        union operand_type inst_arr;
+                    }b_set_ops;
                 } b_set_op_codes;
                 struct{
 
@@ -93,5 +101,7 @@ typedef struct ast{
     } ast_dir_or_inst;
 
 } ast;
+
+ast line_to_ast(char *line_c);
 
 #endif //FINAL_PROJECT_AST_H

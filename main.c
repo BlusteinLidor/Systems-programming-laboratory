@@ -44,7 +44,7 @@ bool file_assem(char *file_name){
     int dc = 0;
     char *am_file_name = NULL;
     FILE *file_orig = NULL;
-    char curr_line[MAX_LINE_LENGTH];
+    char curr_line[MAX_LINE_LENGTH], tmp;
     symbol_table *s_table = NULL;
     ast as_tree;
     line_content line_c;
@@ -74,16 +74,18 @@ bool file_assem(char *file_name){
     s_table = new_symbol_table();
     line_c.file_name = am_file_name;
     line_c.content = curr_line;
-    for(line_c.line_number = 0; fgets(curr_line, MAX_LINE_LENGTH,
+    for(line_c.line_number = 0; fgets(curr_line, MAX_LINE_LENGTH + 2,
                                       file_orig) != NULL; line_c.line_number++){
         /* check if the line exceeds the line length */
         if(strchr(curr_line, '\n') == NULL && !feof(file_orig)){
             print_error(&line_c, "Line is too long. max line size should be 80.");
             success_read = FAIL;
+            do{
+                tmp = fgetc(file_orig);
+            } while(tmp != EOF && tmp != '\n');
         }
         else{
-            /* as_tree = @TODO add to ast.c a function which
-             * @TODO makes an ast from the current line*/
+            as_tree = line_to_ast(curr_line);
             if(as_tree.ast_line_option == ast_error_line){
                 print_error(&line_c, as_tree.ast_error);
                 success_read = FAIL;
@@ -107,8 +109,7 @@ bool file_assem(char *file_name){
         if(success_read){
             for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
                                               file_orig) != NULL; line_c.line_number++){
-                /* as_tree = @TODO add to ast.c a function which
-             * @TODO makes an ast from the current line*/
+                as_tree = line_to_ast(curr_line);
                 /* success_read = @TODO add second pass line process */
             }
             /* @TODO add second pass label encoding */

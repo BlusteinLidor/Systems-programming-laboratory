@@ -42,7 +42,7 @@ void get_inst(char *line_content, int *index, ast *as_tree){
     };
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
     && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
-    comm = malloc(sizeof(char) * len);
+    comm = malloc(sizeof(char) * len + 1);
     strncpy(comm, line_content + *index, len);
     comm[len] = '\0';
     (*index) += len;
@@ -155,7 +155,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
     }
     for(len = 0; line_content[*index + len] != '\n' && line_content[*index + len] != EOF
     && line_content[*index + len] != '\0' && !(isspace(line_content[*index + len])); len++);
-    tmp = (char *)malloc(sizeof(char) * len);
+    tmp = (char *)malloc(sizeof(char) * len + 1);
     strncpy(tmp, line_content + (*index), len);
     tmp[len] = '\0';
     (*index) += len;
@@ -194,7 +194,7 @@ void get_entry(char *line_content, int *index, ast *as_tree){
     }
     for(len = 0; line_content[*index + len] != '\n' && line_content[*index + len] != EOF
                  && line_content[*index + len] != '\0' && !(isspace(line_content[*index + len])); len++);
-    tmp = (char *)malloc(sizeof(char) * len);
+    tmp = (char *)malloc(sizeof(char) * len + 1);
     strncpy(tmp, line_content + (*index), len);
     tmp[len] = '\0';
     (*index) += len;
@@ -239,7 +239,7 @@ void get_opcode(char *line_content, int *index, ast *as_tree){
     };
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
                  && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
-    cmd = malloc(sizeof(char) * len);
+    cmd = malloc(sizeof(char) * len + 1);
     strncpy(cmd, line_content + (*index), len);
     index += len;
 }
@@ -291,7 +291,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
     }
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
     && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
-    op = malloc(sizeof(char) * len);
+    op = malloc(sizeof(char) * len + 1);
     strncpy(op, line_content + *index, len);
     op[len] = '\0';
     /* as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] =
@@ -365,9 +365,54 @@ operand_type_num check_op(char *op, ast *as_tree){
 
 }
 
-/* @TODO add get_group_b_op function */
+void get_group_b_op(char *line_c, int *index, ast *as_tree){
+    int len;
+    char *comma;
+    char *op;
 
-/* @TODO add line_to_ast function*/
+    SKIP_WHITE_CHAR(line_c, *index)
+    if(line_c[*index] == ','){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Command should start with an operand, not a comma");
+        return;
+    }
+    for(len = 0; line_c[*index + len] != '\0' && line_c[*index + len] != EOF && line_c[*index + len] != '\n'
+    && !(isspace(line_c[*index + len])); len++);
+    op = malloc(sizeof(char) * len + 1);
+    strncpy(op, line_c + *index, len);
+    op[len] = '\0';
+    (*index) += len;
+    SKIP_WHITE_CHAR(line_c, *index)
+    if(line_c[*index] != '\0' && line_c[*index] != EOF && line_c[*index] != '\n'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "There are extra characters after operand");
+        free(op);
+        return;
+    }
+    if(strchr(op, '(') == NULL){
+        as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num = check_op(op, as_tree);
+        if(as_tree->ast_line_option == ast_error_line){
+            free(op);
+            return;
+        }
+        else{
+            if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
+                as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.immediate = atoi(op + 1);
+            }
+            else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+                strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label, op);
+            }
+            else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
+                as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.reg = op[1];
+            }
+            free(op);
+            return;
+        }
+    }
+    if(op != NULL){
+        free(op);
+    }
+}
 
 ast line_to_ast(char *line_c){
     int i = 0, index = 0;
@@ -387,7 +432,7 @@ ast line_to_ast(char *line_c){
     SKIP_WHITE_CHAR(line_c, i)
     if((pointer = strchr(line_c, ':')) != NULL){
         index = pointer - (line_c + i);
-        tmp = malloc(sizeof(char) * index);
+        tmp = malloc(sizeof(char) * index + 1);
         strncpy(tmp, line_c + i, index);
         tmp[index] = '\0';
         if(is_label(tmp)){
@@ -415,18 +460,60 @@ ast line_to_ast(char *line_c){
         }
         else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_string_type){
             get_string(line_c, &index, &as_tree);
+            return as_tree;
         }
         else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_data_type){
             get_data(line_c, &index, &as_tree);
         }
         else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_entry_type){
             get_entry(line_c, &index, &as_tree);
+            return as_tree;
         }
         else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_extern_type){
             get_extern(line_c, &index, &as_tree);
+            return as_tree;
         }
     }
     else{
-        /* @TODO continue the function */
+        get_opcode(line_c, &index, &as_tree);
+        if(as_tree.ast_line_option == ast_error_line){
+            return as_tree;
+        }
+        SKIP_WHITE_CHAR(line_c, index)
+
+        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_mov ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_cmp ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_add ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_sub ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_lea){
+            get_group_a_op(line_c, &index, &as_tree);
+            return as_tree;
+        }
+
+        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_not ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_clr ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_inc ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_dec ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_jmp ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_bne ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_red ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_prn ||
+                as_tree.ast_dir_or_inst.instruction.inst_name == op_jsr){
+            get_group_b_op(line_c, &index, &as_tree);
+            return as_tree;
+        }
+
+        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_stop ||
+           as_tree.ast_dir_or_inst.instruction.inst_name == op_rts){
+            SKIP_WHITE_CHAR(line_c, index)
+            if(line_c[index] != '\0' && line_c[index] != EOF && line_c[index] != '\n'){
+                as_tree.ast_line_option = ast_error_line;
+                strcpy(as_tree.ast_error, "There can't be any operands or characters after group c inst");
+                return as_tree;
+            }
+            return as_tree;
+        }
     }
+    return as_tree;
 }
+
