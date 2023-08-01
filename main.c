@@ -14,6 +14,8 @@
 #include "first_pass.h"
 #include "file_types.h"
 
+/* @TODO change all ic/dc to unsigned int */
+
 bool file_assem(char *file_name);
 
 int main(int argc, char *argv[]){

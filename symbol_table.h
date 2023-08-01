@@ -35,6 +35,8 @@ void free_symbol_table(symbol_table *s_table);
 
 void print_symbol_table(symbol_table *s_table);
 
+symbol *get_symbol_from_table(symbol_table *s_table, char *symbol_name);
+
 /* @TODO check if needed to add delete_symbol function */
 
 #endif //FINAL_PROJECT_SYMBOL_TABLE_H

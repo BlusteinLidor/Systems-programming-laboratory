@@ -16,7 +16,6 @@ union operand_type{
 typedef enum{
     immediate,
     label,
-    par_label,
     regstr,
     error
 } operand_type_num;

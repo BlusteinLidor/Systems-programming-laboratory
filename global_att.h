@@ -76,7 +76,6 @@ typedef struct data_m_word{
 typedef struct code_m_word{
     char *label;
     union c_word{
-
         im_or_dir_m_word *im_dir;
         im_reg_m_word *im_reg;
     } c_word;

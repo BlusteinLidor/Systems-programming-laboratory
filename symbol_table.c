@@ -52,11 +52,21 @@ int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
 symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
     for(; i < s_table->free_index; i++){
-        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
+        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0) {
             return s_table->symbols[i]->symbol_t;
         }
-        return error_symbol;
     }
+    return error_symbol;
+}
+
+symbol *get_symbol_from_table(symbol_table *s_table, char *symbol_name){
+    int i = 0;
+    for(; i < s_table->free_index; i++){
+        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
+            return s_table->symbols[i];
+        }
+    }
+    return NULL;
 }
 
 void free_symbol_table(symbol_table *s_table){
