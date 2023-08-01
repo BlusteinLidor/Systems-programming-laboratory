@@ -16,8 +16,6 @@
 #define ENTRY_LENGTH 5
 #define EXTERN_LENGTH 6
 
-/* @TODO switch all skip_white_char to SKIP_WHITE_CHAR */
-
 
 void get_inst(char *line_content, int *index, ast *as_tree){
     int len;
@@ -53,7 +51,7 @@ void get_inst(char *line_content, int *index, ast *as_tree){
 
 void get_string(char *line_content, int *index, ast *as_tree){
     char *closing_quote;
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "String inst doesn't have a string");
@@ -77,7 +75,7 @@ void get_string(char *line_content, int *index, ast *as_tree){
         as_tree->ast_dir_or_inst.directive.str[string_len] = '\0';
         (*index) += string_len + 1;
     }
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Excess characters after string end");
@@ -91,7 +89,7 @@ void get_data(char *line_content, int *index, ast *as_tree){
     int num_count = 0;
 
     do{
-        index = skip_white_char(line_content, index);
+        SKIP_WHITE_CHAR(line_content, *index);
         if(line_content[*index] == ','){
             as_tree->ast_line_option = ast_error_line;
             strcpy(as_tree->ast_error, "Line starts with a comma, instead of a number");
@@ -117,7 +115,7 @@ void get_data(char *line_content, int *index, ast *as_tree){
         as_tree->ast_dir_or_inst.directive.num_arr.int_arr_size++;
         num_count++;
         (*index) += num_end - (line_content + (*index));
-        index = skip_white_char(line_content, index);
+        SKIP_WHITE_CHAR(line_content, *index);
         if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
             return;
         }
@@ -128,7 +126,7 @@ void get_data(char *line_content, int *index, ast *as_tree){
                 return;
             }
             (*index)++;
-            index = skip_white_char(line_content, index);
+            SKIP_WHITE_CHAR(line_content, *index);
             if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
                 as_tree->ast_line_option = ast_error_line;
                 strcpy(as_tree->ast_error, "End of line");
@@ -147,7 +145,7 @@ void get_data(char *line_content, int *index, ast *as_tree){
 void get_extern(char *line_content, int *index, ast *as_tree){
     char *tmp = NULL;
     int len = 0;
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(as_tree->label[0] != '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Name already used");
@@ -168,7 +166,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
     }
     strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
     free(tmp);
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] != '\n' && line_content[*index] != EOF
        && line_content[*index] != '\0'){
         as_tree->ast_line_option = ast_error_line;
@@ -180,7 +178,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
 void get_entry(char *line_content, int *index, ast *as_tree){
     char *tmp = NULL;
     int len = 0;
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(as_tree->label[0] != '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Name already used in label");
@@ -207,7 +205,7 @@ void get_entry(char *line_content, int *index, ast *as_tree){
     }
     strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
     free(tmp);
-    index = skip_white_char(line_content, index);
+    SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] != '\n' && line_content[*index] != EOF
        && line_content[*index] != '\0'){
         as_tree->ast_line_option = ast_error_line;
@@ -273,42 +271,6 @@ void get_dir(char *line_content, int *index, ast *as_tree){
     }
 }
 
-void get_group_a_op(char *line_content, int *index, ast *as_tree){
-    int len;
-    char *comma;
-    char *op;
-
-    if((comma = strchr(line_content + (*index), ',')) == NULL){
-        as_tree->ast_line_option = ast_error_line;
-        strcpy(as_tree->ast_error, "Group A operands should have a comma between them");
-        return;
-    }
-    index = skip_white_char(line_content, index);
-    if(line_content[*index] == ','){
-        as_tree->ast_line_option = ast_error_line;
-        strcpy(as_tree->ast_error, "Command should start with an operand, not a comma");
-        return;
-    }
-    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
-    && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
-    op = malloc(sizeof(char) * len + 1);
-    strncpy(op, line_content + *index, len);
-    op[len] = '\0';
-    /* as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] =
-     @TODO add analyze_operand function*/
-    if(as_tree->ast_line_option == ast_error_line){
-        strcpy(as_tree->ast_error, "The first operand is not legal");
-        free(op);
-        return;
-    }
-    else{
-        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0]
-        == immediate){
-            /* @TODO proceed, and check what's needed to add for ast.h */
-        }
-    }
-}
-
 operand_type_num check_op(char *op, ast *as_tree){
     int i;
     int val;
@@ -362,7 +324,86 @@ operand_type_num check_op(char *op, ast *as_tree){
         strcpy(as_tree->ast_error, "Not a valid operand");
         return error;
     }
+}
 
+void get_group_a_op(char *line_content, int *index, ast *as_tree){
+    int len;
+    char *comma;
+    char *op;
+
+    if((comma = strchr(line_content + (*index), ',')) == NULL){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Group A operands should have a comma between them");
+        return;
+    }
+    SKIP_WHITE_CHAR(line_content, *index);
+    if(line_content[*index] == ','){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Command should start with an operand, not a comma");
+        return;
+    }
+    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
+    && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
+    op = malloc(sizeof(char) * len + 1);
+    strncpy(op, line_content + *index, len);
+    op[len] = '\0';
+    as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] = check_op(op, as_tree);
+    if(as_tree->ast_line_option == ast_error_line){
+        strcpy(as_tree->ast_error, "The first operand is not legal");
+        free(op);
+        return;
+    }
+    else{
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == immediate){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].immediate = atoi(op + 1);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == label){
+            strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label, op);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].reg = op[1];
+        }
+    }
+    free(op);
+    (*index) += len;
+    SKIP_WHITE_CHAR(line_content, *index)
+    (*index)++;
+    SKIP_WHITE_CHAR(line_content, *index)
+    if(line_content[*index] == ','){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Excessive commas found");
+        return;
+    }
+    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
+                 && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
+    op = malloc(sizeof(char) * len + 1);
+    strncpy(op, line_content + *index, len);
+    op[len] = '\0';
+    as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] = check_op(op, as_tree);
+    if(as_tree->ast_line_option == ast_error_line){
+        strcpy(as_tree->ast_error, "The second operand is not legal");
+        free(op);
+        return;
+    }
+    else{
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == immediate){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].immediate = atoi(op + 1);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == label){
+            strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].label, op);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == regstr){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].reg = op[1];
+        }
+    }
+    free(op);
+    (*index) += len;
+    SKIP_WHITE_CHAR(line_content, *index)
+    if(line_content[*index] != '\0' && line_content[*index] != EOF && line_content[*index] != '\n'){
+        as_tree->ast_line_option = ast_error_line;
+        strcpy(as_tree->ast_error, "Excess characters after second op");
+        return;
+    }
 }
 
 void get_group_b_op(char *line_c, int *index, ast *as_tree){

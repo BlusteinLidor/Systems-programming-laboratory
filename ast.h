@@ -63,15 +63,14 @@ typedef struct ast{
                 dir_entry_type,
                 dir_extern_type
             } directive_type;
-
             union{
                 struct{
                     int int_arr[MAX_NUM_ARR_SIZE];
                     int int_arr_size;
                 } num_arr;
-                char str[MAX_LINE_LENGTH];
-                char label[MAX_LABEL_SIZE];
-            };
+                char str[MAX_LINE_LENGTH + 1];
+                char label[MAX_LABEL_SIZE + 1];
+            } dir;
         } directive;
 
         struct{

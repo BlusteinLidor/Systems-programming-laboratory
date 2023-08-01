@@ -21,7 +21,7 @@ im_or_dir_m_word int_to_bits(int num){
     return w;
 }
 
-void process_immediate(int op, int *ic, code_m_word code_m[]){
+void process_immediate(unsigned int *ic, code_m_word code_m[], int op){
     code_m_word code_word = {0};
     code_word.label = NULL;
     code_word.c_word.im_dir = (im_or_dir_m_word *) calloc(1, sizeof(im_or_dir_m_word));
@@ -30,7 +30,7 @@ void process_immediate(int op, int *ic, code_m_word code_m[]){
     code_m[(*ic)++] = code_word;
 }
 
-void process_register(int *ic, code_m_word code_m[], char reg1, char reg2){
+void process_register(unsigned int *ic, code_m_word code_m[], char reg1, char reg2){
     code_m_word code_word;
     code_word.label = NULL;
     code_word.c_word.im_reg = (im_reg_m_word *)calloc(1, sizeof(im_reg_m_word));
@@ -43,7 +43,7 @@ void process_register(int *ic, code_m_word code_m[], char reg1, char reg2){
     code_m[(*ic)++] = code_word;
 }
 
-void process_label(int *ic, code_m_word code_m[], char label[]){
+void process_label(unsigned int *ic, code_m_word code_m[], char label[]){
     code_m_word code_word;
     int len;
     for(len = 0; label[len] != '\0'; len++){
@@ -55,6 +55,98 @@ void process_label(int *ic, code_m_word code_m[], char label[]){
 }
 
 bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table, code_m_word *code_m, ast *as_tree){
-    /* @TODO proceed */
+    if(as_tree->ast_dir_or_inst.instruction.inst_name == op_add ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_sub ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_cmp ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_lea ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_mov){
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == immediate &&
+        as_tree->ast_dir_or_inst.instruction.inst_name != op_cmp){
+            print_error(line_c, "Not a valid destination for the next cmds: add, sub, mov");
+            return false;
+        }
+        if(as_tree->ast_dir_or_inst.instruction.inst_name == op_lea){
+            if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == immediate ||
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr){
+                print_error(line_c, "Not a valid source for the cmd lea");
+                return false;
+            }
+            else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == immediate){
+                print_error(line_c, "Not a valid destination for the cmd lea");
+                return false;
+            }
+        }
+        /* two regs */
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr &&
+        as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == regstr){
+            process_register(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].reg,
+                             as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].reg);
+            return true;
+        }
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == immediate){
+            process_immediate(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].immediate);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == label) {
+            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr) {
+            process_register(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].reg, -1);
+        }
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == immediate) {
+            process_immediate(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].immediate);
+            return true;
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == label) {
+            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].label);
+            return true;
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == regstr) {
+            process_register(ic, code_m, -1, as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].reg);
+            return true;
+        }
+    }
+
+    if(as_tree->ast_dir_or_inst.instruction.inst_name == op_inc ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_dec ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_not ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_clr ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_prn ||
+       as_tree->ast_dir_or_inst.instruction.inst_name == op_red){
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate &&
+        as_tree->ast_dir_or_inst.instruction.inst_name != op_prn){
+            as_tree->ast_line_option = ast_error_line;
+            print_error(line_c, "Not valid for this cmd");
+            return false;
+        }
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
+            process_immediate(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.immediate);
+            return true;
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label);
+            return true;
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
+            process_register(ic, code_m, -1, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.reg);
+            return true;
+        }
+    }
+
+    else if(as_tree->ast_dir_or_inst.instruction.inst_name == op_jsr ||
+            as_tree->ast_dir_or_inst.instruction.inst_name == op_bne ||
+            as_tree->ast_dir_or_inst.instruction.inst_name == op_jmp){
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate ||
+        as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
+            as_tree->ast_line_option = ast_error_line;
+            print_error(line_c, "Not valid for this cmd");
+            return false;
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label);
+            return true;
+        }
+    }
+
+    return true;
 }
 

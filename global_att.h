@@ -1,7 +1,7 @@
 /*
  Created by לידור on 07/06/2023.
 */
-/*@TODO Check if ifndef needed*/
+
 #ifndef FINAL_PROJECT_GLOBAL_ATT_H
 #define FINAL_PROJECT_GLOBAL_ATT_H
 
@@ -17,6 +17,8 @@
 #define MAX_NUM_ARR_SIZE 81
 #define FAIL 0
 #define SUCCESS 1
+
+/*@TODO Check if ifndef needed*/
 
 typedef struct im_or_dir_m_word{
     unsigned int ARE: 2;

@@ -11,9 +11,10 @@
 #include <stdarg.h>
 #include "symbol_table.h"
 
+/* @TODO check the num_to_base_64 function */
 
-int *skip_white_char(char *string, int *index){
-    for(; string[*index] && isspace(string[*index]); (*index)++);
+int skip_white_char(char *string, int index){
+    for(; string[index] && isspace(string[index]); (index)++);
     return index;
 }
 
@@ -90,8 +91,26 @@ void free_string_p(char **strings, int string_num){
     free(strings);
 }
 
+void free_c_word(code_m_word c_word[], unsigned int ic){
+    int i;
+    for(i = 0; i < ic; i++){
+        if(c_word[i].label != NULL){
+            free(c_word[i].label);
+            c_word[i].label = NULL;
+        }
+        if(c_word[i].c_word.im_dir != NULL){
+            free(c_word[i].c_word.im_dir);
+            c_word[i].c_word.im_dir = NULL;
+        }
+        if(c_word[i].c_word.im_reg != NULL){
+            free(c_word[i].c_word.im_reg);
+            c_word[i].c_word.im_reg = NULL;
+        }
+    }
+}
+
 bool is_label(char *str){
-    char label[MAX_LABEL_SIZE];
+    char label[MAX_LABEL_SIZE + 1];
     int i = 0;
     char *not_label_names[] = {"r0", "r1", "r2", "r3", "r4",
                                "r5", "r6", "r7", "and", "mov",
@@ -173,7 +192,7 @@ void print_error(line_content *line_c, char *format, ...){
     printf("\033[0m");
     printf(" in line: ");
     printf("\033[0;35m");
-    printf("%d\n", line_c->line_number)l
+    printf("%d\n", line_c->line_number);
     printf("\033[0m");
     va_end(args);
 }

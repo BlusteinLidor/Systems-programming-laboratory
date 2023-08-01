@@ -12,9 +12,8 @@
 #include "symbol_table.h"
 #include "ast.h"
 #include "first_pass.h"
+#include "second_pass.h"
 #include "file_types.h"
-
-/* @TODO change all ic/dc to unsigned int */
 
 bool file_assem(char *file_name);
 
@@ -42,16 +41,16 @@ int main(int argc, char *argv[]){
 }
 
 bool file_assem(char *file_name){
-    int ic = 0;
-    int dc = 0;
+    unsigned int ic = 0;
+    unsigned int dc = 0;
     char *am_file_name = NULL;
     FILE *file_orig = NULL;
     char curr_line[MAX_LINE_LENGTH], tmp;
     symbol_table *s_table = NULL;
     ast as_tree;
     line_content line_c;
-    im_or_dir_m_word d_word[MEMORY_SIZE] = {0};
-    im_or_dir_m_word c_word[MEMORY_SIZE] = {0};
+    data_m_word d_word[MEMORY_SIZE] = {0};
+    code_m_word c_word[MEMORY_SIZE] = {0};
     bool entry_read = false;
     bool extern_read = false;
     bool success_read = true;
@@ -112,9 +111,9 @@ bool file_assem(char *file_name){
             for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
                                               file_orig) != NULL; line_c.line_number++){
                 as_tree = line_to_ast(curr_line);
-                /* success_read = @TODO add second pass line process */
+                success_read = second_pass_process_line(line_c, s_table, as_tree);
             }
-            /* @TODO add second pass label encoding */
+            second_pass_process_label(s_table, c_word, ic);
         }
         if(ic + dc > MEMORY_SIZE - IC_INIT_VALUE){
             print_error(&line_c, "Memory size is too small");
@@ -131,7 +130,7 @@ bool file_assem(char *file_name){
             free(am_file_name);
             fclose(file_orig);
             free_symbol_table(s_table);
-            /* @TODO add free_c_word (free_code_image) method */
+            free_c_word(c_word, ic);
             return true;
         }
     }
