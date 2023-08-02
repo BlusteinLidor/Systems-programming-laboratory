@@ -157,21 +157,21 @@ char num_to_base_64(int val){
     if((val & 63) >= 0 || (val & 63) <= 25){
         tmp = (val & 63) + 65;
     }
-    /* small letters */
+        /* small letters */
     else if((val & 63) >= 26 || (val & 63) <= 51){
         tmp = (val & 63) + 71;
     }
-    /* numbers */
+        /* numbers */
     else if((val & 63) >= 52 || (val & 63) <= 61){
         tmp = (val & 63) - 4;
     }
-    /* signs */
+        /* signs */
     else{
         /* + sign */
         if((val & 63) == 62){
             tmp = 43;
         }
-        /* / sign */
+            /* / sign */
         else{
             tmp = 47;
         }
@@ -199,8 +199,13 @@ void print_error(line_content *line_c, char *format, ...){
 
 void update_data_sym_address(symbol_table *s_table, unsigned int ic){
     int i;
+    symbol *sym;
     for(i = 0; i < TABLE_SIZE; i++){
-        symbol *sym = s_table->symbols[i];
+/*@@@@@@@@@@@@@@@@@@ check3 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+        printf("\nI'm here3\n");
+        sym = s_table->symbols[i];
+/*@@@@@@@@@@@@@@@@@@ check4 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+        printf("\nI'm here4\n");
         if(sym->symbol_t == data_symbol){
             sym->symbol_address += ic;
         }

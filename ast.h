@@ -11,6 +11,11 @@ union operand_type{
     char reg;
 };
 
+typedef struct op_code_l{
+    char *op_name;
+    enum op_code inst_name;
+} op_code_l;
+
 typedef enum{
     immediate,
     label,
@@ -49,7 +54,7 @@ typedef struct ast{
         } directive;
 
         struct{
-            enum op_code inst_name;
+            enum op_code op_code;
             union{
                 struct{
                     operand_type_num inst_num_arr[2];
@@ -66,9 +71,6 @@ typedef struct ast{
                         union operand_type inst_arr;
                     }b_set_ops;
                 } b_set_op_codes;
-                struct{
-
-                } c_set_op_codes;
             } op_code_set;
         } instruction;
     } ast_dir_or_inst;

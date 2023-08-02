@@ -17,28 +17,6 @@
 void get_inst(char *line_content, int *index, ast *as_tree){
     int len;
     char *comm = NULL;
-    typedef struct op_code_l{
-        char *op_name;
-        enum op_code inst_name;
-    } op_code_l;
-    op_code_l code_l[] = {
-            {"mov", op_mov},
-            {"cmp", op_cmp},
-            {"add", op_add},
-            {"sub", op_sub},
-            {"not", op_not},
-            {"clr", op_clr},
-            {"lea", op_lea},
-            {"inc", op_inc},
-            {"dec", op_dec},
-            {"jmp", op_jmp},
-            {"bne", op_bne},
-            {"red", op_red},
-            {"prn", op_prn},
-            {"jsr", op_jsr},
-            {"rts", op_rts},
-            {"stop", op_stop}
-    };
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
     && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
     comm = malloc(sizeof(char) * len + 1);
@@ -246,11 +224,11 @@ void get_dir(char *line_content, int *index, ast *as_tree){
 }
 
 operand_type_num check_op(char *op, ast *as_tree){
-    int i;
+    /* int i; */
     int val;
     char *num_end;
     char *num_val;
-    char *index;
+    /* char *index; */
 
     if(strlen(op) == 0){
         as_tree->ast_line_option = ast_error_line;
@@ -382,7 +360,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
 
 void get_group_b_op(char *line_c, int *index, ast *as_tree){
     int len;
-    char *comma;
+    /* char *comma; */
     char *op;
 
     SKIP_WHITE_CHAR(line_c, *index)
@@ -496,30 +474,30 @@ ast line_to_ast(char *line_c){
         }
         SKIP_WHITE_CHAR(line_c, index)
 
-        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_mov ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_cmp ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_add ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_sub ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_lea){
+        if(as_tree.ast_dir_or_inst.instruction.op_code == op_mov ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_cmp ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_add ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_sub ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_lea){
             get_group_a_op(line_c, &index, &as_tree);
             return as_tree;
         }
 
-        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_not ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_clr ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_inc ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_dec ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_jmp ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_bne ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_red ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_prn ||
-                as_tree.ast_dir_or_inst.instruction.inst_name == op_jsr){
+        if(as_tree.ast_dir_or_inst.instruction.op_code == op_not ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_clr ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_inc ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_dec ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_jmp ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_bne ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_red ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_prn ||
+                as_tree.ast_dir_or_inst.instruction.op_code == op_jsr){
             get_group_b_op(line_c, &index, &as_tree);
             return as_tree;
         }
 
-        if(as_tree.ast_dir_or_inst.instruction.inst_name == op_stop ||
-           as_tree.ast_dir_or_inst.instruction.inst_name == op_rts){
+        if(as_tree.ast_dir_or_inst.instruction.op_code == op_stop ||
+           as_tree.ast_dir_or_inst.instruction.op_code == op_rts){
             SKIP_WHITE_CHAR(line_c, index)
             if(line_c[index] != '\0' && line_c[index] != EOF && line_c[index] != '\n'){
                 as_tree.ast_line_option = ast_error_line;

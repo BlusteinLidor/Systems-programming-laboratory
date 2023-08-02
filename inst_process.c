@@ -6,7 +6,7 @@
 #include "ast.h"
 #include "global_att.h"
 
-im_or_dir_m_word int_to_bits(int num){
+im_or_dir_m_word int_to_bits_inst(int num){
     im_or_dir_m_word w;
     if(num < 0){
         unsigned int pos_val = abs(num);
@@ -23,7 +23,7 @@ void process_immediate(unsigned int *ic, code_m_word code_m[], int op){
     code_m_word code_word = {0};
     code_word.label = NULL;
     code_word.c_word.im_dir = (im_or_dir_m_word *) calloc(1, sizeof(im_or_dir_m_word));
-    *(code_word.c_word.im_dir) = int_to_bits(op);
+    *(code_word.c_word.im_dir) = int_to_bits_inst(op);
     code_word.c_word.im_dir->ARE = 0;
     code_m[(*ic)++] = code_word;
 }
@@ -53,17 +53,17 @@ void process_label(unsigned int *ic, code_m_word code_m[], char label[]){
 }
 
 bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table, code_m_word *code_m, ast *as_tree){
-    if(as_tree->ast_dir_or_inst.instruction.inst_name == op_add ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_sub ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_cmp ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_lea ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_mov){
+    if(as_tree->ast_dir_or_inst.instruction.op_code == op_add ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_sub ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_cmp ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_lea ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_mov){
         if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == immediate &&
-        as_tree->ast_dir_or_inst.instruction.inst_name != op_cmp){
+        as_tree->ast_dir_or_inst.instruction.op_code != op_cmp){
             print_error(line_c, "Not a valid destination for the next cmds: add, sub, mov");
             return false;
         }
-        if(as_tree->ast_dir_or_inst.instruction.inst_name == op_lea){
+        if(as_tree->ast_dir_or_inst.instruction.op_code == op_lea){
             if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == immediate ||
             as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr){
                 print_error(line_c, "Not a valid source for the cmd lea");
@@ -104,14 +104,14 @@ bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table,
         }
     }
 
-    if(as_tree->ast_dir_or_inst.instruction.inst_name == op_inc ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_dec ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_not ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_clr ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_prn ||
-       as_tree->ast_dir_or_inst.instruction.inst_name == op_red){
+    if(as_tree->ast_dir_or_inst.instruction.op_code == op_inc ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_dec ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_not ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_clr ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_prn ||
+       as_tree->ast_dir_or_inst.instruction.op_code == op_red){
         if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate &&
-        as_tree->ast_dir_or_inst.instruction.inst_name != op_prn){
+        as_tree->ast_dir_or_inst.instruction.op_code != op_prn){
             as_tree->ast_line_option = ast_error_line;
             print_error(line_c, "Not valid for this cmd");
             return false;
@@ -130,9 +130,9 @@ bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table,
         }
     }
 
-    else if(as_tree->ast_dir_or_inst.instruction.inst_name == op_jsr ||
-            as_tree->ast_dir_or_inst.instruction.inst_name == op_bne ||
-            as_tree->ast_dir_or_inst.instruction.inst_name == op_jmp){
+    else if(as_tree->ast_dir_or_inst.instruction.op_code == op_jsr ||
+            as_tree->ast_dir_or_inst.instruction.op_code == op_bne ||
+            as_tree->ast_dir_or_inst.instruction.op_code == op_jmp){
         if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate ||
         as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
             as_tree->ast_line_option = ast_error_line;

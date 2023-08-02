@@ -71,6 +71,8 @@ bool file_assem(char *file_name){
         return FAIL;
     }
 
+
+
     /* first pass */
     s_table = new_symbol_table();
     line_c.file_name = am_file_name;
@@ -92,6 +94,8 @@ bool file_assem(char *file_name){
                 success_read = FAIL;
             }
             else{
+/*@@@@@@@@@@@@@@@@@@ check1 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+                printf("\nI'm here1\n");
                 if(as_tree.ast_line_option == ast_directive){
                     if(as_tree.ast_dir_or_inst.directive.directive_type == dir_entry_type){
                         entry_read = true;
@@ -103,8 +107,9 @@ bool file_assem(char *file_name){
                 }
             }
         }
-        update_data_sym_address(s_table, ic);
-
+        /* problem in this line */ update_data_sym_address(s_table, ic);
+/*@@@@@@@@@@@@@@@@@@ check2 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+        printf("\nI'm here2\n");
         /* second pass */
         rewind(file_orig);
         if(success_read){
@@ -127,16 +132,11 @@ bool file_assem(char *file_name){
             if(extern_read){
                 file_type_ext(file_name, s_table, c_word, d_word, ic);
             }
-            free(am_file_name);
-            fclose(file_orig);
-            free_symbol_table(s_table);
-            free_c_word(c_word, ic);
-            return true;
         }
     }
-
-
-
-
-
+    free(am_file_name);
+    fclose(file_orig);
+    free_symbol_table(s_table);
+    free_c_word(c_word, ic);
+    return true;
 }

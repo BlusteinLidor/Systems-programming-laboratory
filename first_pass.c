@@ -22,7 +22,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
                 return false;
             }
         }
-        //directive
+        /*directive*/
         if(as_tree->ast_line_option == ast_directive){
             if(as_tree->ast_dir_or_inst.directive.directive_type == dir_data_type
             || as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){

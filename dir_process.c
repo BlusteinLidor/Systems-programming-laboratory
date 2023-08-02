@@ -9,7 +9,7 @@ data_m_word process_char(char ch){
     return d_word;
 }
 
-data_m_word int_to_bits(int num){
+data_m_word int_to_bits_dir(int num){
     data_m_word w;
     if(num < 0){
         unsigned int pos_val = abs(num);
@@ -25,7 +25,7 @@ data_m_word int_to_bits(int num){
 void process_data(unsigned int *dc, data_m_word *d_word, int num_arr[], int num_count){
     int i;
     for(i = 0; i < num_count; i++){
-        d_word[(*dc)++] = int_to_bits(num_arr[i]);
+        d_word[(*dc)++] = int_to_bits_dir(num_arr[i]);
     }
 }
 
