@@ -8,7 +8,7 @@
 #define MAX_LINE_LENGTH 81
 #define MEMORY_SIZE 1024
 #define MAX_INT_SIZE 4095
-#define MIN_INT_SIZE -4096
+#define MIN_INT_SIZE (-4096)
 #define IC_INIT_VALUE 100
 #define MAX_ERROR_LINE_SIZE 201
 #define MAX_LABEL_SIZE 31
@@ -64,11 +64,6 @@ typedef enum op_code{
     op_stop,
     op_error
 } op_code;
-
-typedef struct op_code_l{
-    char *op_name;
-    enum op_code;
-} op_code_l;
 
 
 typedef struct data_m_word{

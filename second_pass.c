@@ -7,7 +7,7 @@
 #include "other_functions.h"
 #include "symbol_table.h"
 
-bool second_pass_process_line(line_content line_c, symbol_type *s_table, ast as_tree){
+bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as_tree){
     symbol *sym;
     if(as_tree.ast_line_option == ast_instruction){
         if(as_tree.ast_dir_or_inst.instruction.inst_name == op_add ||
@@ -50,19 +50,13 @@ bool second_pass_process_line(line_content line_c, symbol_type *s_table, ast as_
                     return false;
                 }
             }
-            else{
-                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label) == NULL){
-                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label);
-                    return false;
-                }
-            }
         }
         return true;
     }
     if(as_tree.ast_dir_or_inst.directive.directive_type == dir_entry_type){
-        sym = get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.directive.label);
+        sym = get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.directive.dir.label);
         if(sym == NULL){
-            print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.directive.label);
+            print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.directive.dir.label);
             return false;
         }
         else{
@@ -70,9 +64,9 @@ bool second_pass_process_line(line_content line_c, symbol_type *s_table, ast as_
         }
     }
     else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_extern_type){
-        sym = get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.directive.label);
+        sym = get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.directive.dir.label);
         if(sym == NULL){
-            print_error(&line_c, "Label %s is not used", as_tree.ast_dir_or_inst.directive.label);
+            print_error(&line_c, "Label %s is not used", as_tree.ast_dir_or_inst.directive.dir.label);
             return false;
         }
         else{

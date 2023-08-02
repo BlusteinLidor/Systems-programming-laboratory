@@ -28,7 +28,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
         if(as_tree->ast_line_option == ast_directive){
             if(as_tree->ast_dir_or_inst.directive.directive_type == dir_data_type
             || as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
-                if(as_tree->label && (get_symbol_address_from_table(s_table, as_tree->label) == -1)){
+                if(as_tree->label[0] == '\0' && (get_symbol_address_from_table(s_table, as_tree->label) == -1)){
                     sym = new_symbol(as_tree->label, *dc, data_symbol);
                     add_symbol_to_table(s_table, sym);
                 }

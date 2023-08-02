@@ -20,6 +20,10 @@
 void get_inst(char *line_content, int *index, ast *as_tree){
     int len;
     char *comm = NULL;
+    typedef struct op_code_l{
+        char *op_name;
+        enum op_code inst_name;
+    } op_code_l;
     op_code_l code_l[] = {
             {"mov", op_mov},
             {"cmp", op_cmp},
@@ -71,8 +75,8 @@ void get_string(char *line_content, int *index, ast *as_tree){
     }
     else{
         int string_len = closing_quote - (line_content + (*index));
-        strncpy(as_tree->ast_dir_or_inst.directive.str, line_content + (*index), string_len);
-        as_tree->ast_dir_or_inst.directive.str[string_len] = '\0';
+        strncpy(as_tree->ast_dir_or_inst.directive.dir.str, line_content + (*index), string_len);
+        as_tree->ast_dir_or_inst.directive.dir.str[string_len] = '\0';
         (*index) += string_len + 1;
     }
     SKIP_WHITE_CHAR(line_content, *index);
@@ -111,8 +115,8 @@ void get_data(char *line_content, int *index, ast *as_tree){
             strcpy(as_tree->ast_error, "The number is out of range");
             return;
         }
-        as_tree->ast_dir_or_inst.directive.num_arr.int_arr[num_count] = val;
-        as_tree->ast_dir_or_inst.directive.num_arr.int_arr_size++;
+        as_tree->ast_dir_or_inst.directive.dir.num_arr.int_arr[num_count] = val;
+        as_tree->ast_dir_or_inst.directive.dir.num_arr.int_arr_size++;
         num_count++;
         (*index) += num_end - (line_content + (*index));
         SKIP_WHITE_CHAR(line_content, *index);
@@ -164,7 +168,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
         free(tmp);
         return;
     }
-    strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
+    strcpy(as_tree->ast_dir_or_inst.directive.dir.label, tmp);
     free(tmp);
     SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] != '\n' && line_content[*index] != EOF
@@ -184,8 +188,8 @@ void get_entry(char *line_content, int *index, ast *as_tree){
         strcpy(as_tree->ast_error, "Name already used in label");
         return;
     }
-    if(line_content + (*index) == '\n' || line_content + (*index) == EOF
-    || line_content + (*index) == '\0'){
+    if(line_content[*index] == '\n' || line_content[*index] == EOF
+    || line_content[*index] == '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Must be named");
         return;
@@ -203,7 +207,7 @@ void get_entry(char *line_content, int *index, ast *as_tree){
         free(tmp);
         return;
     }
-    strcpy(as_tree->ast_dir_or_inst.directive.label, tmp);
+    strcpy(as_tree->ast_dir_or_inst.directive.dir.label, tmp);
     free(tmp);
     SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] != '\n' && line_content[*index] != EOF
@@ -214,33 +218,6 @@ void get_entry(char *line_content, int *index, ast *as_tree){
     }
 }
 
-void get_opcode(char *line_content, int *index, ast *as_tree){
-    char *cmd = NULL;
-    int len = 0;
-    op_code_l code_l[] = {
-            {"mov", op_mov},
-            {"cmp", op_cmp},
-            {"add", op_add},
-            {"sub", op_sub},
-            {"not", op_not},
-            {"clr", op_clr},
-            {"lea", op_lea},
-            {"inc", op_inc},
-            {"dec", op_dec},
-            {"jmp", op_jmp},
-            {"bne", op_bne},
-            {"red", op_red},
-            {"prn", op_prn},
-            {"jsr", op_jsr},
-            {"rts", op_rts},
-            {"stop", op_stop}
-    };
-    for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
-                 && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
-    cmd = malloc(sizeof(char) * len + 1);
-    strncpy(cmd, line_content + (*index), len);
-    index += len;
-}
 
 void get_dir(char *line_content, int *index, ast *as_tree){
     (*index)++;
@@ -496,27 +473,27 @@ ast line_to_ast(char *line_c){
     if(line_c[index] == '.'){
         get_dir(line_c, &index, &as_tree);
         SKIP_WHITE_CHAR(line_c, index)
-        if(as_tree.ast_line_option = ast_error_line){
+        if(as_tree.ast_line_option == ast_error_line){
             return as_tree;
         }
-        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_string_type){
+        else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_string_type){
             get_string(line_c, &index, &as_tree);
             return as_tree;
         }
-        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_data_type){
+        else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_data_type){
             get_data(line_c, &index, &as_tree);
         }
-        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_entry_type){
+        else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_entry_type){
             get_entry(line_c, &index, &as_tree);
             return as_tree;
         }
-        else if(as_tree.ast_dir_or_inst.directive.directive_type = dir_extern_type){
+        else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_extern_type){
             get_extern(line_c, &index, &as_tree);
             return as_tree;
         }
     }
     else{
-        get_opcode(line_c, &index, &as_tree);
+        get_inst(line_c, &index, &as_tree);
         if(as_tree.ast_line_option == ast_error_line){
             return as_tree;
         }

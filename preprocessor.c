@@ -10,7 +10,7 @@ Created by לידור on 11/06/2023.
 #include "macro_table.h"
 #include <string.h>
 
-/*@TODO define numbers*/
+/* @TODO define numbers*/
 
 bool pre_process(char *file_name){
     int index = 0, str_num = 0;

@@ -20,29 +20,6 @@ typedef enum{
     error
 } operand_type_num;
 
-/*typedef enum{
-    inst_mov,
-    inst_cmp,
-    inst_add,
-    inst_sub,
-    inst_lea
-} a_inst_set;
-typedef enum{
-    inst_not,
-    inst_clr,
-    inst_inc,
-    inst_dec,
-    inst_jmp,
-    inst_bne,
-    inst_red,
-    inst_prn,
-    inst_jsr
-} b_inst_set;
-typedef enum{
-    inst_rts,
-    inst_stop
-} c_inst_set;*/
-
 typedef struct ast{
     enum{
         ast_empty_line,
@@ -74,7 +51,7 @@ typedef struct ast{
         } directive;
 
         struct{
-            op_code inst_name;
+            enum op_code inst_name;
             union{
                 struct{
                     operand_type_num inst_num_arr[2];

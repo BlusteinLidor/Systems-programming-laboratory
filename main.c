@@ -125,7 +125,7 @@ bool file_assem(char *file_name){
                 file_type_ent(file_name, s_table);
             }
             if(extern_read){
-                file_type_ext(file_name, s_table, c_word, ic);
+                file_type_ext(file_name, s_table, c_word, d_word, ic);
             }
             free(am_file_name);
             fclose(file_orig);

@@ -39,7 +39,7 @@ void add_symbol_to_table(symbol_table *s_table, symbol *smbl){
     s_table->free_index++;
 }
 
-int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
+unsigned int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
     for(; i < s_table->free_index; i++){
         if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){

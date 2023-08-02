@@ -11,7 +11,7 @@
 
 typedef struct symbol{
     char *symbol_name;
-    int symbol_address;
+    unsigned int symbol_address;
     symbol_type symbol_t;
 } symbol;
 
@@ -28,7 +28,7 @@ symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type s
 
 void add_symbol_to_table(symbol_table *s_table, symbol *smbl);
 
-int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name);
+unsigned int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name);
 
 symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name);
 
