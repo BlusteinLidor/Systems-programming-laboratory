@@ -1,6 +1,4 @@
-//
-// Created by לידור on 15/06/2023.
-//
+
 
 #include "symbol_table.h"
 #include <stdlib.h>

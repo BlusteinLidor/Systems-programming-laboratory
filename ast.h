@@ -1,6 +1,4 @@
-//
-// Created by לידור on 19/06/2023.
-//
+
 
 #ifndef FINAL_PROJECT_AST_H
 #define FINAL_PROJECT_AST_H
@@ -79,4 +77,4 @@ typedef struct ast{
 
 ast line_to_ast(char *line_c);
 
-#endif //FINAL_PROJECT_AST_H
+#endif

@@ -1,6 +1,4 @@
-//
-// Created by לידור on 15/06/2023.
-//
+
 
 #ifndef FINAL_PROJECT_SYMBOL_TABLE_H
 #define FINAL_PROJECT_SYMBOL_TABLE_H
@@ -38,4 +36,4 @@ void print_symbol_table(symbol_table *s_table);
 
 symbol *get_symbol_from_table(symbol_table *s_table, char *symbol_name);
 
-#endif //FINAL_PROJECT_SYMBOL_TABLE_H
+#endif

@@ -1,6 +1,4 @@
-//
-// Created by לידור on 01/08/2023.
-//
+
 
 #ifndef FINAL_PROJECT_INST_PROCESS_H
 #define FINAL_PROJECT_INST_PROCESS_H
@@ -12,4 +10,4 @@
 
 bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table, code_m_word *code_m, ast *as_tree);
 
-#endif //FINAL_PROJECT_INST_PROCESS_H
+#endif

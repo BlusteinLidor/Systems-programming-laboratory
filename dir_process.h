@@ -1,6 +1,4 @@
-//
-// Created by לידור on 01/08/2023.
-//
+
 
 #ifndef FINAL_PROJECT_DIR_PROCESS_H
 #define FINAL_PROJECT_DIR_PROCESS_H
@@ -13,4 +11,4 @@ void process_string(unsigned int *dc, data_m_word *d_word, char string[]);
 
 
 
-#endif //FINAL_PROJECT_DIR_PROCESS_H
+#endif

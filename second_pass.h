@@ -1,6 +1,4 @@
-//
-// Created by לידור on 28/06/2023.
-//
+
 
 #ifndef FINAL_PROJECT_SECOND_PASS_H
 #define FINAL_PROJECT_SECOND_PASS_H
@@ -13,4 +11,4 @@
 bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as_tree);
 void second_pass_process_label(symbol_table *s_table, code_m_word *code_m, unsigned int ic);
 
-#endif //FINAL_PROJECT_SECOND_PASS_H
+#endif

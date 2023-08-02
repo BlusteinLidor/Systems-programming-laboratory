@@ -1,6 +1,4 @@
-/*
- Created by לידור on 13/06/2023.
-*/
+
 
 #ifndef FINAL_PROJECT_MACRO_TABLE_H
 #define FINAL_PROJECT_MACRO_TABLE_H
@@ -33,4 +31,4 @@ void print_macro_table(macro_table *m_table);
 
 
 
-#endif /*FINAL_PROJECT_MACRO_TABLE_H*/
+#endif

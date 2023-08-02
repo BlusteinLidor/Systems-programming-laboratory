@@ -1,6 +1,4 @@
-//
-// Created by לידור on 21/07/2023.
-//
+
 
 #include "file_types.h"
 

@@ -9,4 +9,4 @@ Created by לידור on 14/06/2023.
 
 bool pre_process(char *file_name);
 
-#endif //FINAL_PROJECT_PREPROCESSOR_H
+#endif

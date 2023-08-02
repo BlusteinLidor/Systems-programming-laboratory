@@ -1,6 +1,4 @@
-//
-// Created by לידור on 01/08/2023.
-//
+
 
 #include "inst_process.h"
 #include <stdlib.h>
