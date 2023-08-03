@@ -201,11 +201,10 @@ void update_data_sym_address(symbol_table *s_table, unsigned int ic){
     int i;
     symbol *sym;
     for(i = 0; i < TABLE_SIZE; i++){
-/*@@@@@@@@@@@@@@@@@@ check3 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
-        printf("\nI'm here3\n");
         sym = s_table->symbols[i];
-/*@@@@@@@@@@@@@@@@@@ check4 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
-        printf("\nI'm here4\n");
+        if(sym == NULL){
+            break;
+        }
         if(sym->symbol_t == data_symbol){
             sym->symbol_address += ic;
         }

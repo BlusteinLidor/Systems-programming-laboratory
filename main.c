@@ -71,13 +71,12 @@ bool file_assem(char *file_name){
         return FAIL;
     }
 
-
-
     /* first pass */
     s_table = new_symbol_table();
     line_c.file_name = am_file_name;
+    printf("file name: %s\n", line_c.file_name);
     line_c.content = curr_line;
-    for(line_c.line_number = 0; fgets(curr_line, MAX_LINE_LENGTH + 2,
+    for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH + 2,
                                       file_orig) != NULL; line_c.line_number++){
         /* check if the line exceeds the line length */
         if(strchr(curr_line, '\n') == NULL && !feof(file_orig)){
@@ -88,14 +87,14 @@ bool file_assem(char *file_name){
             } while(tmp != EOF && tmp != '\n');
         }
         else{
+            /*@@@@@@@@@@@@@@@@@@ check1 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+            printf("\nI'm here1@@@@@@@@@@@@@@@@@@@@\n");
             as_tree = line_to_ast(curr_line);
             if(as_tree.ast_line_option == ast_error_line){
                 print_error(&line_c, as_tree.ast_error);
                 success_read = FAIL;
             }
             else{
-/*@@@@@@@@@@@@@@@@@@ check1 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
-                printf("\nI'm here1\n");
                 if(as_tree.ast_line_option == ast_directive){
                     if(as_tree.ast_dir_or_inst.directive.directive_type == dir_entry_type){
                         entry_read = true;
@@ -107,31 +106,29 @@ bool file_assem(char *file_name){
                 }
             }
         }
-        /* problem in this line */ update_data_sym_address(s_table, ic);
-/*@@@@@@@@@@@@@@@@@@ check2 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
-        printf("\nI'm here2\n");
-        /* second pass */
-        rewind(file_orig);
-        if(success_read){
-            for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
-                                              file_orig) != NULL; line_c.line_number++){
-                as_tree = line_to_ast(curr_line);
-                success_read = second_pass_process_line(line_c, s_table, as_tree);
-            }
-            second_pass_process_label(s_table, c_word, ic);
+    }
+    /* problem in this line */ update_data_sym_address(s_table, ic);
+    /* second pass */
+    rewind(file_orig);
+    if(success_read){
+        for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
+                                          file_orig) != NULL; line_c.line_number++){
+            as_tree = line_to_ast(curr_line);
+            success_read = second_pass_process_line(line_c, s_table, as_tree);
         }
-        if(ic + dc > MEMORY_SIZE - IC_INIT_VALUE){
-            print_error(&line_c, "Memory size is too small");
-            success_read = false;
+        second_pass_process_label(s_table, c_word, ic);
+    }
+    if(ic + dc > MEMORY_SIZE - IC_INIT_VALUE){
+        print_error(&line_c, "Memory size is too small");
+        success_read = false;
+    }
+    if(success_read){
+        file_type_ob(file_name, c_word, d_word, ic, dc);
+        if(entry_read){
+            file_type_ent(file_name, s_table);
         }
-        if(success_read){
-            file_type_ob(file_name, c_word, d_word, ic, dc);
-            if(entry_read){
-                file_type_ent(file_name, s_table);
-            }
-            if(extern_read){
-                file_type_ext(file_name, s_table, c_word, d_word, ic);
-            }
+        if(extern_read){
+            file_type_ext(file_name, s_table, c_word, d_word, ic);
         }
     }
     free(am_file_name);

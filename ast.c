@@ -15,17 +15,25 @@
 
 
 void get_inst(char *line_content, int *index, ast *as_tree){
-    int len;
+    int len, i;
     char *comm = NULL;
+    op_code op_c;
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
     && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
     comm = malloc(sizeof(char) * len + 1);
     strncpy(comm, line_content + *index, len);
     comm[len] = '\0';
     (*index) += len;
-
     as_tree->ast_line_option = ast_instruction;
-
+    for(op_c = op_codes[0], i = 0; i < 16; i++){
+        if(strcmp(comm, op_c.name) == 0){
+            as_tree->ast_dir_or_inst.instruction.op_code.name = op_c.name;
+            as_tree->ast_dir_or_inst.instruction.op_code.op_c = op_c.op_c;
+            return;
+        }
+    }
+    as_tree->ast_line_option = ast_error_line;
+    strcpy(as_tree->ast_error, "No such cmd");
 }
 
 void get_string(char *line_content, int *index, ast *as_tree){
