@@ -8,11 +8,11 @@
 bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as_tree){
     symbol *sym;
     if(as_tree.ast_line_option == ast_instruction){
-        if(as_tree.ast_dir_or_inst.instruction.op_code == op_add ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_sub ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_cmp ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_lea ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_mov){
+        if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_add ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_sub ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_cmp ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_lea ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_mov){
             if(as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == label){
                 if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label) == NULL){
                     print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label);
@@ -26,12 +26,12 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
                 }
             }
         }
-        else if(as_tree.ast_dir_or_inst.instruction.op_code == op_inc ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_dec ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_not ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_clr ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_prn ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_red){
+        else if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_inc ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_dec ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_not ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_clr ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_prn ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_red){
             if(as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
                 if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label) == NULL){
                     print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label);
@@ -39,9 +39,9 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
                 }
             }
         }
-        else if(as_tree.ast_dir_or_inst.instruction.op_code == op_jsr ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_bne ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_jmp){
+        else if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jsr ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_bne ||
+                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jmp){
             if(as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
                 if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label) == NULL){
                     print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label);

@@ -74,7 +74,6 @@ bool file_assem(char *file_name){
     /* first pass */
     s_table = new_symbol_table();
     line_c.file_name = am_file_name;
-    printf("file name: %s\n", line_c.file_name);
     line_c.content = curr_line;
     for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH + 2,
                                       file_orig) != NULL; line_c.line_number++){
@@ -87,9 +86,9 @@ bool file_assem(char *file_name){
             } while(tmp != EOF && tmp != '\n');
         }
         else{
-            /*@@@@@@@@@@@@@@@@@@ check1 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
-            printf("\nI'm here1@@@@@@@@@@@@@@@@@@@@\n");
             as_tree = line_to_ast(curr_line);
+            printf("line %d op_code: %s\n", line_c.line_number, as_tree.ast_dir_or_inst.instruction.op_code.name);
+            printf("line %d label: %s\n", line_c.line_number, as_tree.label);
             if(as_tree.ast_line_option == ast_error_line){
                 print_error(&line_c, as_tree.ast_error);
                 success_read = FAIL;
@@ -107,7 +106,9 @@ bool file_assem(char *file_name){
             }
         }
     }
-    /* problem in this line */ update_data_sym_address(s_table, ic);
+    update_data_sym_address(s_table, ic);
+    printf("free_index is: %d\n", s_table->free_index);
+    print_symbol_table(s_table);
     /* second pass */
     rewind(file_orig);
     if(success_read){

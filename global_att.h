@@ -70,7 +70,7 @@ typedef struct op_code{
     char *name;
 } op_code;
 
-op_code op_codes[] = {
+op_code cmds[] = {
     {op_mov, "mov"},
     {op_cmp, "cmp"},
     {op_add, "add"},

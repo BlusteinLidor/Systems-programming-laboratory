@@ -18,14 +18,32 @@ void get_inst(char *line_content, int *index, ast *as_tree){
     int len, i;
     char *comm = NULL;
     op_code op_c;
+    op_code cmds[] = {
+            {op_mov, "mov"},
+            {op_cmp, "cmp"},
+            {op_add, "add"},
+            {op_sub, "sub"},
+            {op_not, "not"},
+            {op_clr, "clr"},
+            {op_lea, "lea"},
+            {op_inc, "inc"},
+            {op_dec, "dec"},
+            {op_jmp, "jmp"},
+            {op_bne, "bne"},
+            {op_red, "red"},
+            {op_prn, "prn"},
+            {op_jsr, "jsr"},
+            {op_rts, "rts"},
+            {op_stop, "stop"}
+    };
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != '\n'
-    && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
+                 && line_content[*index + len] != EOF && !(isspace(line_content[*index + len])); len++);
     comm = malloc(sizeof(char) * len + 1);
     strncpy(comm, line_content + *index, len);
     comm[len] = '\0';
     (*index) += len;
     as_tree->ast_line_option = ast_instruction;
-    for(op_c = op_codes[0], i = 0; i < 16; i++){
+    for(op_c = cmds[0], i = 0; i < 16; i++){
         if(strcmp(comm, op_c.name) == 0){
             as_tree->ast_dir_or_inst.instruction.op_code.name = op_c.name;
             as_tree->ast_dir_or_inst.instruction.op_code.op_c = op_c.op_c;
@@ -139,7 +157,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
         return;
     }
     for(len = 0; line_content[*index + len] != '\n' && line_content[*index + len] != EOF
-    && line_content[*index + len] != '\0' && !(isspace(line_content[*index + len])); len++);
+                 && line_content[*index + len] != '\0' && !(isspace(line_content[*index + len])); len++);
     tmp = (char *)malloc(sizeof(char) * len + 1);
     strncpy(tmp, line_content + (*index), len);
     tmp[len] = '\0';
@@ -172,7 +190,7 @@ void get_entry(char *line_content, int *index, ast *as_tree){
         return;
     }
     if(line_content[*index] == '\n' || line_content[*index] == EOF
-    || line_content[*index] == '\0'){
+       || line_content[*index] == '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Must be named");
         return;
@@ -303,7 +321,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
         return;
     }
     for(len = 0; line_content[*index + len] != '\0' && line_content[*index + len] != EOF && line_content[*index + len] != '\n'
-    && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
+                 && !(isspace(line_content[*index + len])) && line_content[*index + len] != ','; len++);
     op = malloc(sizeof(char) * len + 1);
     strncpy(op, line_content + *index, len);
     op[len] = '\0';
@@ -378,7 +396,7 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
         return;
     }
     for(len = 0; line_c[*index + len] != '\0' && line_c[*index + len] != EOF && line_c[*index + len] != '\n'
-    && !(isspace(line_c[*index + len])); len++);
+                 && !(isspace(line_c[*index + len])); len++);
     op = malloc(sizeof(char) * len + 1);
     strncpy(op, line_c + *index, len);
     op[len] = '\0';
@@ -419,7 +437,6 @@ ast line_to_ast(char *line_c){
     int i = 0, index = 0;
     ast as_tree = {0};
     char *pointer, *tmp = NULL;
-
     SKIP_WHITE_CHAR(line_c, i)
     pointer = (char *)(line_c + i);
     if(line_c[i] == '\0' || line_c[i] == EOF || line_c[i] == '\n'){
@@ -430,7 +447,7 @@ ast line_to_ast(char *line_c){
         as_tree.ast_line_option = ast_comment_line;
         return as_tree;
     }
-    SKIP_WHITE_CHAR(line_c, i)
+    /*SKIP_WHITE_CHAR(line_c, i)*/ /* @TODO CHECK IF NEEDED */
     if((pointer = strchr(line_c, ':')) != NULL){
         index = pointer - (line_c + i);
         tmp = malloc(sizeof(char) * index + 1);
@@ -481,31 +498,30 @@ ast line_to_ast(char *line_c){
             return as_tree;
         }
         SKIP_WHITE_CHAR(line_c, index)
-
-        if(as_tree.ast_dir_or_inst.instruction.op_code == op_mov ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_cmp ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_add ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_sub ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_lea){
+        if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_mov ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_cmp ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_add ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_sub ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_lea){
             get_group_a_op(line_c, &index, &as_tree);
             return as_tree;
         }
 
-        if(as_tree.ast_dir_or_inst.instruction.op_code == op_not ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_clr ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_inc ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_dec ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_jmp ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_bne ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_red ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_prn ||
-                as_tree.ast_dir_or_inst.instruction.op_code == op_jsr){
+        if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_not ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_clr ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_inc ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_dec ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jmp ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_bne ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_red ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_prn ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jsr){
             get_group_b_op(line_c, &index, &as_tree);
             return as_tree;
         }
 
-        if(as_tree.ast_dir_or_inst.instruction.op_code == op_stop ||
-           as_tree.ast_dir_or_inst.instruction.op_code == op_rts){
+        if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_stop ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_rts){
             SKIP_WHITE_CHAR(line_c, index)
             if(line_c[index] != '\0' && line_c[index] != EOF && line_c[index] != '\n'){
                 as_tree.ast_line_option = ast_error_line;
