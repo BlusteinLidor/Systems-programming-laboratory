@@ -28,6 +28,7 @@ symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type s
     new_s->symbol_name = malloc(strlen(symbol_name));
     new_s->symbol_address = symbol_address;
     strcpy(new_s->symbol_name, symbol_name);
+    new_s->symbol_t = symbol_t;
 
     return new_s;
 }
@@ -37,10 +38,10 @@ void add_symbol_to_table(symbol_table *s_table, symbol *smbl){
     s_table->free_index++;
 }
 
-unsigned int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
+int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
     for(; i < s_table->free_index; i++){
-        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0) {
+        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
             return s_table->symbols[i]->symbol_address;
         }
     }

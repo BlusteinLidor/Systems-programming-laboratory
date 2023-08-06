@@ -206,6 +206,7 @@ void update_data_sym_address(symbol_table *s_table, unsigned int ic){
             break;
         }
         if(sym->symbol_t == data_symbol){
+            printf("inside o_f\n");
             sym->symbol_address += ic;
         }
     }

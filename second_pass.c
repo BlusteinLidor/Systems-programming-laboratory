@@ -9,10 +9,10 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
     symbol *sym;
     if(as_tree.ast_line_option == ast_instruction){
         if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_add ||
-                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_sub ||
-                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_cmp ||
-                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_lea ||
-                as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_mov){
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_sub ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_cmp ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_lea ||
+           as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_mov){
             if(as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == label){
                 if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label) == NULL){
                     print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label);
@@ -65,6 +65,7 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
         sym = get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.directive.dir.label);
         if(sym == NULL){
             print_error(&line_c, "Label %s is not used", as_tree.ast_dir_or_inst.directive.dir.label);
+
             return false;
         }
         else{

@@ -43,7 +43,8 @@ void get_inst(char *line_content, int *index, ast *as_tree){
     comm[len] = '\0';
     (*index) += len;
     as_tree->ast_line_option = ast_instruction;
-    for(op_c = cmds[0], i = 0; i < 16; i++){
+    for(i = 0; i < 16; i++){
+        op_c = cmds[i];
         if(strcmp(comm, op_c.name) == 0){
             as_tree->ast_dir_or_inst.instruction.op_code.name = op_c.name;
             as_tree->ast_dir_or_inst.instruction.op_code.op_c = op_c.op_c;
@@ -81,7 +82,8 @@ void get_string(char *line_content, int *index, ast *as_tree){
         (*index) += string_len + 1;
     }
     SKIP_WHITE_CHAR(line_content, *index);
-    if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
+    if(line_content[*index] != '\n' || line_content[*index] != EOF || line_content[*index] != '\0' || line_content[*index] != ' '){
+        SKIP_WHITE_CHAR(line_content, *index);
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Excess characters after string end");
         return;
@@ -447,7 +449,7 @@ ast line_to_ast(char *line_c){
         as_tree.ast_line_option = ast_comment_line;
         return as_tree;
     }
-    /*SKIP_WHITE_CHAR(line_c, i)*/ /* @TODO CHECK IF NEEDED */
+    SKIP_WHITE_CHAR(line_c, i) /* @TODO CHECK IF NEEDED */
     if((pointer = strchr(line_c, ':')) != NULL){
         index = pointer - (line_c + i);
         tmp = malloc(sizeof(char) * index + 1);

@@ -70,24 +70,7 @@ typedef struct op_code{
     char *name;
 } op_code;
 
-op_code cmds[] = {
-    {op_mov, "mov"},
-    {op_cmp, "cmp"},
-    {op_add, "add"},
-    {op_sub, "sub"},
-    {op_not, "not"},
-    {op_clr, "clr"},
-    {op_lea, "lea"},
-    {op_inc, "inc"},
-    {op_dec, "dec"},
-    {op_jmp, "jmp"},
-    {op_bne, "bne"},
-    {op_red, "red"},
-    {op_prn, "prn"},
-    {op_jsr, "jsr"},
-    {op_rts, "rts"},
-    {op_stop, "stop"}
-};
+
 
 
 typedef struct data_m_word{
