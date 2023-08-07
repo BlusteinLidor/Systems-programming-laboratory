@@ -51,8 +51,8 @@ char **strings(char *string, char *delim){
     int str_num = 0, i = 0;
     char *token;
     char **strings;
-    char *copy = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
-    char *temp = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
+    char *copy = (char *) malloc(sizeof(char) * (MAX_LINE_LENGTH + 1));
+    char *temp = (char *) malloc(sizeof(char) * (MAX_LINE_LENGTH + 1));
     strcpy(copy, string);
     str_num = string_num(copy, delim);
     strings = malloc(sizeof(char *) * str_num);
@@ -200,13 +200,12 @@ void print_error(line_content *line_c, char *format, ...){
 void update_data_sym_address(symbol_table *s_table, unsigned int ic){
     int i;
     symbol *sym;
-    for(i = 0; i < TABLE_SIZE; i++){
+    for(i = 0; i < TABLE_SIZE; ++i){
         sym = s_table->symbols[i];
         if(sym == NULL){
             break;
         }
         if(sym->symbol_t == data_symbol){
-            printf("inside o_f\n");
             sym->symbol_address += ic;
         }
     }

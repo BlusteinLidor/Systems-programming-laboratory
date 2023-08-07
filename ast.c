@@ -57,6 +57,7 @@ void get_inst(char *line_content, int *index, ast *as_tree){
 
 void get_string(char *line_content, int *index, ast *as_tree){
     char *closing_quote;
+    int string_len;
     SKIP_WHITE_CHAR(line_content, *index);
     if(line_content[*index] == '\n' || line_content[*index] == EOF || line_content[*index] == '\0'){
         as_tree->ast_line_option = ast_error_line;
@@ -76,14 +77,13 @@ void get_string(char *line_content, int *index, ast *as_tree){
         return;
     }
     else{
-        int string_len = closing_quote - (line_content + (*index));
+        string_len = closing_quote - (line_content + (*index));
         strncpy(as_tree->ast_dir_or_inst.directive.dir.str, line_content + (*index), string_len);
         as_tree->ast_dir_or_inst.directive.dir.str[string_len] = '\0';
         (*index) += string_len + 1;
     }
     SKIP_WHITE_CHAR(line_content, *index);
-    if(line_content[*index] != '\n' || line_content[*index] != EOF || line_content[*index] != '\0' || line_content[*index] != ' '){
-        SKIP_WHITE_CHAR(line_content, *index);
+    if(line_content[*index] != '\n' && line_content[*index] != EOF && line_content[*index] != '\0'){
         as_tree->ast_line_option = ast_error_line;
         strcpy(as_tree->ast_error, "Excess characters after string end");
         return;
@@ -92,7 +92,7 @@ void get_string(char *line_content, int *index, ast *as_tree){
 
 void get_data(char *line_content, int *index, ast *as_tree){
     char *num_end;
-    int val = 0;
+    int val;
     int num_count = 0;
 
     do{

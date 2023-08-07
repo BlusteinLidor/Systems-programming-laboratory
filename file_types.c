@@ -83,7 +83,7 @@ void file_type_ent(char *file_name, symbol_table *s_table){
             continue;
         }
         if(sym->symbol_t == entry_symbol){
-            fprintf(ent_file, "%s\t\t%d\n", sym->symbol_name, (sym->symbol_address) + 100);
+            fprintf(ent_file, "%s\t\t%d\n", sym->symbol_name, (sym->symbol_address) + IC_INIT_VALUE);
         }
     }
     free(ent_file_name);

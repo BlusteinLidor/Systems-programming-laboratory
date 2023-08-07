@@ -85,6 +85,7 @@ void free_symbol_table(symbol_table *s_table){
 void print_symbol_table(symbol_table *s_table){
     int i = 0;
     symbol *curr_symbol;
+    printf("\n");
     for(; i < s_table->free_index; i++){
         if((curr_symbol = s_table->symbols[i]) != NULL){
             printf("symbol #%d of type %d = %s: %d\n", (i+1), curr_symbol->symbol_t, curr_symbol->symbol_name, ((curr_symbol->symbol_address) + 100));

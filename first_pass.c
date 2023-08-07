@@ -27,11 +27,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
             if(as_tree->ast_dir_or_inst.directive.directive_type == dir_data_type
                || as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
                 if(as_tree->label[0] != '\0' && get_symbol_from_table(s_table, as_tree->label) == NULL){
-                    printf("line #%d\n", line_c.line_number);
-                    printf("symbol is directive\n");
-                    printf("type is %d\n", data_symbol);
                     sym = new_symbol(as_tree->label, *dc, data_symbol);
-                    printf("sym type is %d\n", sym->symbol_t);
                     add_symbol_to_table(s_table, sym);
                 }
                 if(as_tree->ast_dir_or_inst.directive.directive_type == dir_string_type){
@@ -48,7 +44,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
                 return false;
             }
         }
-        else if(as_tree->ast_line_option == ast_instruction){
+        if(as_tree->ast_line_option == ast_instruction){
             sym = new_symbol(as_tree->label, *ic, code_symbol);
             add_symbol_to_table(s_table, sym);
             return process_inst(&line_c, ic, s_table, c_word, as_tree);

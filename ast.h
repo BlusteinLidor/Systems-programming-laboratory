@@ -8,7 +8,7 @@
 union operand_type{
     int immediate;
     char label[MAX_LABEL_SIZE];
-    char reg;
+    int reg;
 };
 
 typedef enum{

@@ -31,6 +31,13 @@ typedef struct im_reg_m_word{
     unsigned int source_reg: 5;
 } im_reg_m_word;
 
+typedef struct first_word{
+    unsigned int ARE: 2;
+    unsigned int target_reg: 3;
+    unsigned int operand: 4;
+    unsigned int source_reg: 3;
+} first_word;
+
 /* defines the registers and an option for not-register */
 typedef enum registers{
     r0,
@@ -71,8 +78,6 @@ typedef struct op_code{
 } op_code;
 
 
-
-
 typedef struct data_m_word{
     unsigned int data_or_string: 12;
 } data_m_word;
@@ -80,6 +85,7 @@ typedef struct data_m_word{
 typedef struct code_m_word{
     char *label;
     union c_word{
+        first_word *f_word;
         im_or_dir_m_word *im_dir;
         im_reg_m_word *im_reg;
     } c_word;

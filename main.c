@@ -99,8 +99,8 @@ bool file_assem(char *file_name){
                     else if(as_tree.ast_dir_or_inst.directive.directive_type == dir_extern_type){
                         extern_read = true;
                     }
-                    success_read = first_pass_process_line(&ic, &dc, line_c, s_table, d_word, c_word, &as_tree);
                 }
+                success_read = first_pass_process_line(&ic, &dc, line_c, s_table, d_word, c_word, &as_tree);
             }
         }
     }

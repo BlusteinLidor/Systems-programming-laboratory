@@ -14,7 +14,7 @@ data_m_word int_to_bits_dir(int num){
     if(num < 0){
         unsigned int pos_val = abs(num);
         unsigned int comp_val = (~pos_val) + 1;
-        w.data_or_string = (1 << 11) | (comp_val & 0xFFF);
+        w.data_or_string = (1 << 9) | (comp_val & 0xFFF);
     }
     else{
         w.data_or_string = num & 0xFFF;
