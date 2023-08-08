@@ -7,7 +7,7 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
                   unsigned int ic, unsigned int dc){
     FILE *ob_file;
     int i, j;
-    int val;
+    int val, val1, val2;
     char *ob_file_name = str_cat(file_name, ".ob");
 
     ob_file = fopen(ob_file_name, "w");
@@ -26,6 +26,14 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
             fprintf(ob_file, "%c", num_to_base_64(val));
             val = (val >> 6);
         }
+        fprintf(ob_file, "\n");
+    }
+    for(i = 0; i < dc; i++){
+        val1 = data_m[i].data_or_string;
+        val2 = (val2 >> 6);
+        fprintf(ob_file, "%d\t\t", i + ic + IC_INIT_VALUE);
+        fprintf(ob_file, "%c", num_to_base_64(val2));
+        fprintf(ob_file, "%c", num_to_base_64(val1));
         fprintf(ob_file, "\n");
     }
     free(ob_file_name);
