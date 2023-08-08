@@ -12,7 +12,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
                              code_m_word *c_word, ast *as_tree){
     symbol *sym = NULL;
     if(as_tree->label[0] != '\0'){
-        if(get_symbol_address_from_table(s_table, as_tree->label) != -1){
+        if(get_symbol_from_table(s_table, as_tree->label) != NULL){
             if(get_symbol_type_from_table(s_table, as_tree->label) == extern_symbol){
                 print_error(&line_c, "The extern label is trying to be defined in the same file");
                 return false;
@@ -44,9 +44,11 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
                 return false;
             }
         }
+        /* instruction */
         if(as_tree->ast_line_option == ast_instruction){
             sym = new_symbol(as_tree->label, *ic, code_symbol);
             add_symbol_to_table(s_table, sym);
+            printf("line #%d\n", line_c.line_number);
             return process_inst(&line_c, ic, s_table, c_word, as_tree);
         }
     }
@@ -73,6 +75,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
             }
         }
         else if(as_tree->ast_line_option == ast_instruction){
+            printf("line #%d\n", line_c.line_number);
             return process_inst(&line_c, ic, s_table, c_word, as_tree);
         }
     }

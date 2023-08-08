@@ -410,28 +410,23 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
         free(op);
         return;
     }
-    if(strchr(op, '(') == NULL){
-        as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num = check_op(op, as_tree);
-        if(as_tree->ast_line_option == ast_error_line){
-            free(op);
-            return;
-        }
-        else{
-            if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
-                as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.immediate = atoi(op + 1);
-            }
-            else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
-                strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.label, op);
-            }
-            else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
-                as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.b_set_ops.inst_arr.reg = op[1];
-            }
-            free(op);
-            return;
-        }
-    }
-    if(op != NULL){
+    as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num = check_op(op, as_tree);
+    if(as_tree->ast_line_option == ast_error_line){
         free(op);
+        return;
+    }
+    else{
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate = atoi(op + 1);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+            strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label, op);
+        }
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.reg = op[1];
+        }
+        free(op);
+        return;
     }
 }
 

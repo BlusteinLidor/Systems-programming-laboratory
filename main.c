@@ -104,7 +104,6 @@ bool file_assem(char *file_name){
             }
         }
     }
-
     update_data_sym_address(s_table, ic);
     /* second pass */
     rewind(file_orig);

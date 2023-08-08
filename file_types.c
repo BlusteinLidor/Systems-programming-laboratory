@@ -7,7 +7,7 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
                   unsigned int ic, unsigned int dc){
     FILE *ob_file;
     int i, j;
-    unsigned int val;
+    int val;
     char *ob_file_name = str_cat(file_name, ".ob");
 
     ob_file = fopen(ob_file_name, "w");
@@ -19,7 +19,7 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
     fprintf(ob_file, "\t\t%d %d\n", ic, dc);
     for(i = 0; i < ic; i++){
         if(code_m[i].c_word.im_dir != NULL){
-            val = *(unsigned int *)code_m[i].c_word.im_dir;
+            val = *(int *)code_m[i].c_word.im_dir;
         }
         fprintf(ob_file, "%d\t\t", i + IC_INIT_VALUE);
         for(j = 2; j > 0; j--){
@@ -83,7 +83,7 @@ void file_type_ent(char *file_name, symbol_table *s_table){
             continue;
         }
         if(sym->symbol_t == entry_symbol){
-            fprintf(ent_file, "%s\t\t%d\n", sym->symbol_name, (sym->symbol_address) + IC_INIT_VALUE);
+            fprintf(ent_file, "%s\t\t%d\n", sym->symbol_name, (sym->symbol_address) + 100);
         }
     }
     free(ent_file_name);

@@ -25,6 +25,10 @@ typedef struct im_or_dir_m_word{
     unsigned int operand: 10;
 } im_or_dir_m_word;
 
+typedef struct data_m_word{
+    unsigned int data_or_string: 12;
+} data_m_word;
+
 typedef struct im_reg_m_word{
     unsigned int ARE: 2;
     unsigned int target_reg: 5;
@@ -76,11 +80,6 @@ typedef struct op_code{
     op op_c;
     char *name;
 } op_code;
-
-
-typedef struct data_m_word{
-    unsigned int data_or_string: 12;
-} data_m_word;
 
 typedef struct code_m_word{
     char *label;

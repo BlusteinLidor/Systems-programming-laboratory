@@ -12,10 +12,10 @@ union operand_type{
 };
 
 typedef enum{
+    error = -1,
     immediate,
     label,
-    regstr,
-    error
+    regstr
 } operand_type_num;
 
 typedef struct ast{
@@ -57,14 +57,7 @@ typedef struct ast{
                 } a_set_op_codes;
                 struct{
                     operand_type_num inst_num;
-                    union{
-                        struct{
-                            char label[MAX_LABEL_SIZE + 1];
-                            operand_type_num inst_num_arr[2];
-                            union operand_type inst_arr[2];
-                        } b_set_label;
-                        union operand_type inst_arr;
-                    }b_set_ops;
+                    union operand_type inst_arr;
                 } b_set_op_codes;
             } op_code_set;
         } instruction;

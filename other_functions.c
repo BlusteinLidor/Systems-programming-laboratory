@@ -120,6 +120,7 @@ bool is_label(char *str){
                                "jsr", "rts", "stop"};
     int nln_len = 25;
     int str_len = strlen(str);
+    printf("IS LABEL: label is: %s\n", str);
     if(str_len > MAX_LABEL_SIZE){
         return false;
     }
@@ -127,15 +128,22 @@ bool is_label(char *str){
         strncpy(label, str, str_len - 1);
         label[str_len] = '\0';
     }
+
     else{
         strncpy(label, str, str_len);
         label[str_len] = '\0';
+        printf("label is: %s\n", label);
     }
     if(!isalpha(label[0])){
         return false;
     }
     for(i = 0; i < nln_len; i++){
         if(strcmp(label, not_label_names[i]) == 0){
+            return false;
+        }
+    }
+    for(i = 0; label[i] != '\0'; i++){
+        if(!isalnum(label[i])){
             return false;
         }
     }
@@ -206,6 +214,7 @@ void update_data_sym_address(symbol_table *s_table, unsigned int ic){
             break;
         }
         if(sym->symbol_t == data_symbol){
+            printf("sym being updated is: %s\n", sym->symbol_name);
             sym->symbol_address += ic;
         }
     }
