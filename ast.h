@@ -13,9 +13,9 @@ union operand_type{
 
 typedef enum{
     error = -1,
-    immediate,
-    label,
-    regstr
+    immediate = 1,
+    label = 3,
+    regstr = 5
 } operand_type_num;
 
 typedef struct ast{

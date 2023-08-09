@@ -128,7 +128,6 @@ bool is_label(char *str){
         strncpy(label, str, str_len - 1);
         label[str_len] = '\0';
     }
-
     else{
         strncpy(label, str, str_len);
         label[str_len] = '\0';
@@ -162,21 +161,21 @@ bool all_digit(char *str){
 char num_to_base_64(int val){
     char tmp = 0;
     /* capital letters */
-    if((val & 63) >= 0 || (val & 63) <= 25){
-        tmp = (val & 63) + 65;
+    if((tmp = (val & 63)) <= 25){
+        tmp += 65;
     }
         /* small letters */
-    else if((val & 63) >= 26 || (val & 63) <= 51){
-        tmp = (val & 63) + 71;
+    else if((tmp = (val & 63)) <= 51){
+        tmp += 71;
     }
         /* numbers */
-    else if((val & 63) >= 52 || (val & 63) <= 61){
-        tmp = (val & 63) - 4;
+    else if((tmp = (val & 63)) <= 61){
+        tmp -= 4;
     }
         /* signs */
     else{
         /* + sign */
-        if((val & 63) == 62){
+        if((tmp = (val & 63)) == 62){
             tmp = 43;
         }
             /* / sign */

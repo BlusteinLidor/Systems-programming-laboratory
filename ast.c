@@ -341,7 +341,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
             strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label, op);
         }
         else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == regstr){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].reg = op[1];
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].reg = op[2];
         }
     }
     free(op);
@@ -373,7 +373,7 @@ void get_group_a_op(char *line_content, int *index, ast *as_tree){
             strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].label, op);
         }
         else if(as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == regstr){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].reg = op[1];
+            as_tree->ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].reg = op[2];
         }
     }
     free(op);
@@ -417,13 +417,14 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
     }
     else{
         if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate = atoi(op + 1);
+            printf("^$&$#$# atoi: %d\n", atoi(op));
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate = atoi(op);
         }
         else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
             strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label, op);
         }
         else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.reg = op[1];
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.reg = op[2];
         }
         free(op);
         return;

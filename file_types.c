@@ -6,8 +6,8 @@
 void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
                   unsigned int ic, unsigned int dc){
     FILE *ob_file;
-    int i, j;
-    int val, val1, val2;
+    int i;
+    int val1, val2;
     char *ob_file_name = str_cat(file_name, ".ob");
 
     ob_file = fopen(ob_file_name, "w");
@@ -19,18 +19,20 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
     fprintf(ob_file, "\t\t%d %d\n", ic, dc);
     for(i = 0; i < ic; i++){
         if(code_m[i].c_word.im_dir != NULL){
-            val = *(int *)code_m[i].c_word.im_dir;
+            val1 = *(int *)code_m[i].c_word.im_dir;
+            val2 = (val1 >> 6);
         }
+        printf("line: %d\n", i + IC_INIT_VALUE);
+        printf("################ val2: %d\n", val2);
+        printf("################ val1: %d\n", val1);
         fprintf(ob_file, "%d\t\t", i + IC_INIT_VALUE);
-        for(j = 2; j > 0; j--){
-            fprintf(ob_file, "%c", num_to_base_64(val));
-            val = (val >> 6);
-        }
+        fprintf(ob_file, "%c", num_to_base_64(val2));
+        fprintf(ob_file, "%c", num_to_base_64(val1));
         fprintf(ob_file, "\n");
     }
     for(i = 0; i < dc; i++){
         val1 = data_m[i].data_or_string;
-        val2 = (val2 >> 6);
+        val2 = (val1 >> 6);
         fprintf(ob_file, "%d\t\t", i + ic + IC_INIT_VALUE);
         fprintf(ob_file, "%c", num_to_base_64(val2));
         fprintf(ob_file, "%c", num_to_base_64(val1));
