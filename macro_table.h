@@ -25,10 +25,6 @@ void update_macro_content(macro_table *m_table, char *macro_name, char *macro_up
 
 void free_macro_table(macro_table *m_table);
 
-void print_macro_table(macro_table *m_table);
-
-/* @TODO check if needed to add delete_macro function */
-
 
 
 #endif

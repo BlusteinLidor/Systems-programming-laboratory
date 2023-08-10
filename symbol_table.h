@@ -26,13 +26,9 @@ symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type s
 
 void add_symbol_to_table(symbol_table *s_table, symbol *smbl);
 
-int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name);
-
 symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name);
 
 void free_symbol_table(symbol_table *s_table);
-
-void print_symbol_table(symbol_table *s_table);
 
 symbol *get_symbol_from_table(symbol_table *s_table, char *symbol_name);
 

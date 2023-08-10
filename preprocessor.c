@@ -10,10 +10,8 @@ Created by לידור on 11/06/2023.
 #include "macro_table.h"
 #include <string.h>
 
-/* @TODO define numbers*/
-
 bool pre_process(char *file_name){
-    int index = 0, str_num = 0;
+    int index, str_num = 0;
     bool macro_read = false;
     char curr_line[MAX_LINE_LENGTH];
     char delim[6] = " \r\n\0\t";

@@ -22,9 +22,6 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
             val1 = *(int *)code_m[i].c_word.im_dir;
             val2 = (val1 >> 6);
         }
-        printf("line: %d\n", i + IC_INIT_VALUE);
-        printf("################ val2: %d\n", val2);
-        printf("################ val1: %d\n", val1);
         fprintf(ob_file, "%d\t\t", i + IC_INIT_VALUE);
         fprintf(ob_file, "%c", num_to_base_64(val2));
         fprintf(ob_file, "%c", num_to_base_64(val1));
@@ -43,7 +40,7 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
 }
 
 void file_type_ext(char *file_name, symbol_table *s_table, code_m_word code_m[],
-                   data_m_word data_m[], unsigned int ic){
+                   unsigned int ic){
     FILE *ext_file;
     int count = 0;
     int i;

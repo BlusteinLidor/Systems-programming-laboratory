@@ -1,7 +1,6 @@
 
 
 #include "dir_process.h"
-#include <stdio.h>
 
 data_m_word process_char(char ch){
     data_m_word d_word = {0};
@@ -12,7 +11,6 @@ data_m_word process_char(char ch){
 
 data_m_word int_to_bits_dir(int num){
     data_m_word w;
-    printf("inside dir: num = %d\n", num);
     if(num < 0){
         unsigned int pos_val = abs(num);
         unsigned int comp_val = (~pos_val) + 1;

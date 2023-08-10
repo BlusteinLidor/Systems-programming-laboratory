@@ -52,14 +52,14 @@ typedef struct ast{
             op_code op_code;
             union{
                 struct{
-                    operand_type_num inst_num_arr[2];
-                    union operand_type inst_arr[2];
-                } a_set_op_codes;
+                    operand_type_num op_types[2];
+                    union operand_type op_values[2];
+                } a_group_op_codes;
                 struct{
-                    operand_type_num inst_num;
-                    union operand_type inst_arr;
-                } b_set_op_codes;
-            } op_code_set;
+                    operand_type_num op_type;
+                    union operand_type op_value;
+                } b_group_op_codes;
+            } op_code_group;
         } instruction;
     } ast_dir_or_inst;
 

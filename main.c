@@ -7,7 +7,6 @@
 #include "global_att.h"
 #include "other_functions.h"
 #include "preprocessor.h"
-#include "macro_table.h"
 #include <stdbool.h>
 #include "symbol_table.h"
 #include "ast.h"
@@ -132,7 +131,7 @@ bool file_assem(char *file_name){
             file_type_ent(file_name, s_table);
         }
         if(extern_read){
-            file_type_ext(file_name, s_table, c_word, d_word, ic);
+            file_type_ext(file_name, s_table, c_word, ic);
         }
     }
     free(am_file_name);

@@ -40,15 +40,14 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
             }
             else if(as_tree->ast_dir_or_inst.directive.directive_type == dir_entry_type ||
                     as_tree->ast_dir_or_inst.directive.directive_type == dir_extern_type){
-                print_error(&line_c, "Entry/extern aren't considered in label definition");
-                return false;
+                return true;
             }
         }
         /* instruction */
         if(as_tree->ast_line_option == ast_instruction){
             sym = new_symbol(as_tree->label, *ic, code_symbol);
             add_symbol_to_table(s_table, sym);
-            return process_inst(&line_c, ic, s_table, c_word, as_tree);
+            return process_inst(&line_c, ic, c_word, as_tree);
         }
     }
         /* if it's not a label declaration */
@@ -74,7 +73,7 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
             }
         }
         else if(as_tree->ast_line_option == ast_instruction){
-            return process_inst(&line_c, ic, s_table, c_word, as_tree);
+            return process_inst(&line_c, ic, c_word, as_tree);
         }
     }
     return true;

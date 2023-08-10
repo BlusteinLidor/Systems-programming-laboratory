@@ -10,7 +10,7 @@ void file_type_ob(char *file_name, code_m_word code_m[], data_m_word data_m[],
                   unsigned int ic, unsigned int dc);
 
 void file_type_ext(char *file_name, symbol_table *s_table, code_m_word code_m[],
-                   data_m_word data_m[], unsigned int ic);
+                   unsigned int ic);
 
 void file_type_ent(char *file_name, symbol_table *s_table);
 

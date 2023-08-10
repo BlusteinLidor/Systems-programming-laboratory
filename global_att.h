@@ -48,19 +48,6 @@ typedef struct first_word{
     unsigned int source_reg: 3;
 } first_word;
 
-/* defines the registers and an option for not-register */
-typedef enum registers{
-    r0,
-    r1,
-    r2,
-    r3,
-    r4,
-    r5,
-    r6,
-    r7,
-    NOT_REG = -1
-} reg;
-
 /* defines the opcodes and an error */
 typedef enum op{
     op_mov,
@@ -78,8 +65,7 @@ typedef enum op{
     op_prn,
     op_jsr,
     op_rts,
-    op_stop,
-    op_error
+    op_stop
 } op;
 
 typedef struct op_code{
