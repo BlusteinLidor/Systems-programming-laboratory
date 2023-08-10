@@ -54,6 +54,7 @@ bool file_assem(char *file_name){
     bool entry_read = false;
     bool extern_read = false;
     bool success_read = true;
+    bool error_found = false;
 
 
     /* preprocessor - macro separating */
@@ -70,7 +71,6 @@ bool file_assem(char *file_name){
         free(am_file_name);
         return FAIL;
     }
-
     /* first pass */
     s_table = new_symbol_table();
     line_c.file_name = am_file_name;
@@ -81,6 +81,7 @@ bool file_assem(char *file_name){
         if(strchr(curr_line, '\n') == NULL && !feof(file_orig)){
             print_error(&line_c, "Line is too long. max line size should be 80.");
             success_read = FAIL;
+            error_found = SUCCESS;
             do{
                 tmp = fgetc(file_orig);
             } while(tmp != EOF && tmp != '\n');
@@ -90,6 +91,7 @@ bool file_assem(char *file_name){
             if(as_tree.ast_line_option == ast_error_line){
                 print_error(&line_c, as_tree.ast_error);
                 success_read = FAIL;
+                error_found = SUCCESS;
             }
             else{
                 if(as_tree.ast_line_option == ast_directive){
@@ -101,28 +103,30 @@ bool file_assem(char *file_name){
                     }
                 }
                 success_read = first_pass_process_line(&ic, &dc, line_c, s_table, d_word, c_word, &as_tree);
+
             }
         }
     }
     update_data_sym_address(s_table, ic);
     /* second pass */
     rewind(file_orig);
-    if(success_read){
-        printf("\nsymbol table:\n");
-        print_symbol_table(s_table);
-        printf("\nend of symbol table\n");
+    if(!error_found){
         for(line_c.line_number = 1; fgets(curr_line, MAX_LINE_LENGTH,
                                           file_orig) != NULL; line_c.line_number++){
             as_tree = line_to_ast(curr_line);
             success_read = second_pass_process_line(line_c, s_table, as_tree);
+            if(!success_read){
+                error_found = SUCCESS;
+            }
         }
         second_pass_process_label(s_table, c_word, ic);
     }
     if(ic + dc > MEMORY_SIZE - IC_INIT_VALUE){
         print_error(&line_c, "Memory size is too small");
         success_read = false;
+        error_found = SUCCESS;
     }
-    if(success_read){
+    if(!error_found){
         file_type_ob(file_name, c_word, d_word, ic, dc);
         if(entry_read){
             file_type_ent(file_name, s_table);
@@ -134,6 +138,5 @@ bool file_assem(char *file_name){
     free(am_file_name);
     fclose(file_orig);
     free_symbol_table(s_table);
-    free_c_word(c_word, ic);
     return true;
 }

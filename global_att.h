@@ -17,6 +17,12 @@
 #define MAX_NUM_ARR_SIZE 81
 #define FAIL 0
 #define SUCCESS 1
+#define OP_CODES_NUM 16
+#define REG_LENGTH 3
+#define REG_NUM_INDEX 2
+#define REG_R_INDEX 1
+#define REG_AT_SIGN_INDEX 0
+#define REG_NUM 7
 
 /*@TODO Check if ifndef needed*/
 

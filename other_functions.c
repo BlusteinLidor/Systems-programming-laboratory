@@ -98,6 +98,10 @@ void free_c_word(code_m_word c_word[], unsigned int ic){
             free(c_word[i].label);
             c_word[i].label = NULL;
         }
+        if(c_word[i].c_word.f_word != NULL){
+            free(c_word[i].c_word.f_word);
+            c_word[i].c_word.f_word = NULL;
+        }
         if(c_word[i].c_word.im_dir != NULL){
             free(c_word[i].c_word.im_dir);
             c_word[i].c_word.im_dir = NULL;
@@ -120,7 +124,6 @@ bool is_label(char *str){
                                "jsr", "rts", "stop"};
     int nln_len = 25;
     int str_len = strlen(str);
-    printf("IS LABEL: label is: %s\n", str);
     if(str_len > MAX_LABEL_SIZE){
         return false;
     }
@@ -131,7 +134,6 @@ bool is_label(char *str){
     else{
         strncpy(label, str, str_len);
         label[str_len] = '\0';
-        printf("label is: %s\n", label);
     }
     if(!isalpha(label[0])){
         return false;
@@ -189,18 +191,18 @@ char num_to_base_64(int val){
 void print_error(line_content *line_c, char *format, ...){
     va_list args;
     va_start(args, format);
-    printf("\033[0;31m");
+    printf("\033[0;31m"); /* set text to red color */
     printf("ERROR: ");
-    printf("\033[0m");
+    printf("\033[0m"); /* reset text color */
     vprintf(format, args);
     printf(" in file: ");
-    printf("\033[0;35m");
+    printf("\033[0;34m"); /* set text to blue color */
     printf("%s", line_c->file_name);
-    printf("\033[0m");
+    printf("\033[0m"); /* reset text color */
     printf(" in line: ");
-    printf("\033[0;35m");
+    printf("\033[0;33m"); /* set text to yellow color */
     printf("%d\n", line_c->line_number);
-    printf("\033[0m");
+    printf("\033[0m"); /* reset text color */
     va_end(args);
 }
 
@@ -213,7 +215,6 @@ void update_data_sym_address(symbol_table *s_table, unsigned int ic){
             break;
         }
         if(sym->symbol_t == data_symbol){
-            printf("sym being updated is: %s\n", sym->symbol_name);
             sym->symbol_address += ic;
         }
     }

@@ -4,6 +4,8 @@
 #include "ast.h"
 #include "other_functions.h"
 #include "symbol_table.h"
+#define ARE_EXTERN 1
+#define ARE_SYM_IN_FILE 2
 
 bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as_tree){
     symbol *sym;
@@ -87,12 +89,12 @@ void second_pass_process_label(symbol_table *s_table, code_m_word *code_m, unsig
             }
             if(sym->symbol_t == extern_symbol){
                 code_m[i].c_word.im_dir = (im_or_dir_m_word *)calloc(1, sizeof(im_or_dir_m_word));
-                code_m[i].c_word.im_dir->ARE = 1;
+                code_m[i].c_word.im_dir->ARE = ARE_EXTERN;
                 code_m[i].c_word.im_dir->operand = 0;
             }
             else{
                 code_m[i].c_word.im_dir = (im_or_dir_m_word *)calloc(1, sizeof(im_or_dir_m_word));
-                code_m[i].c_word.im_dir->ARE = 2;
+                code_m[i].c_word.im_dir->ARE = ARE_SYM_IN_FILE;
                 code_m[i].c_word.im_dir->operand = (sym->symbol_address) + IC_INIT_VALUE;
             }
         }

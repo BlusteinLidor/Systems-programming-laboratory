@@ -26,8 +26,8 @@ macro_table *new_macro_table(void){
 
 macro *new_macro(char *macro_name, char *macro_content){
     macro *new_m = malloc(sizeof(macro));
-    new_m->macro_name = malloc(strlen(macro_name));
-    new_m->macro_content = malloc(strlen(macro_content));
+    new_m->macro_name = malloc(MAX_MACRO_NAME_SIZE);
+    new_m->macro_content = malloc(MAX_LINE_LENGTH);
     strcpy(new_m->macro_name, macro_name);
     strcpy(new_m->macro_content, macro_content);
 

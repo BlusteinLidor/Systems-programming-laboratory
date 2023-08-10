@@ -12,6 +12,7 @@
 #define STRING_LENGTH 6
 #define ENTRY_LENGTH 5
 #define EXTERN_LENGTH 6
+#define BITS_TO_MOVE 11
 
 
 void get_inst(char *line_content, int *index, ast *as_tree){
@@ -43,7 +44,7 @@ void get_inst(char *line_content, int *index, ast *as_tree){
     comm[len] = '\0';
     (*index) += len;
     as_tree->ast_line_option = ast_instruction;
-    for(i = 0; i < 16; i++){
+    for(i = 0; i < OP_CODES_NUM; i++){
         op_c = cmds[i];
         if(strcmp(comm, op_c.name) == 0){
             as_tree->ast_dir_or_inst.instruction.op_code.name = op_c.name;
@@ -270,13 +271,13 @@ operand_type_num check_op(char *op, ast *as_tree){
         else if(all_digit(++op)){
             num_val = &op[0];
         }
-        val = strtol(num_val, &num_end, 10);
+        val = strtol(num_val, &num_end, BASE_TEN);
         if(*num_end != '\0'){
             as_tree->ast_line_option = ast_error_line;
             strcpy(as_tree->ast_error, "Not a valid number");
             return error;
         }
-        if(val >= -(1 << 11) && val < (1 << 11)){
+        if(val >= -(1 << BITS_TO_MOVE) && val < (1 << BITS_TO_MOVE)){
             return immediate;
         }
         else{
@@ -285,9 +286,9 @@ operand_type_num check_op(char *op, ast *as_tree){
             return error;
         }
     }
-    else if(op[0] == '@' && strlen(op) == 3 && op[1] == 'r' && isdigit(op[2])){
-        int register_num = op[2] - '0';
-        if(register_num >= 0 && register_num <= 7){
+    else if(op[REG_AT_SIGN_INDEX] == '@' && strlen(op) == REG_LENGTH && op[REG_R_INDEX] == 'r' && isdigit(op[REG_NUM_INDEX])){
+        int register_num = op[REG_NUM_INDEX] - '0';
+        if(register_num >= 0 && register_num <= REG_NUM){
             return regstr;
         }
         else{
@@ -417,7 +418,6 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
     }
     else{
         if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
-            printf("^$&$#$# atoi: %d\n", atoi(op));
             as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate = atoi(op);
         }
         else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){

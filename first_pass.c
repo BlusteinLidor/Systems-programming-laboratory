@@ -48,7 +48,6 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
         if(as_tree->ast_line_option == ast_instruction){
             sym = new_symbol(as_tree->label, *ic, code_symbol);
             add_symbol_to_table(s_table, sym);
-            printf("line #%d\n", line_c.line_number);
             return process_inst(&line_c, ic, s_table, c_word, as_tree);
         }
     }
@@ -75,7 +74,6 @@ bool first_pass_process_line(unsigned int *ic, unsigned int *dc, line_content li
             }
         }
         else if(as_tree->ast_line_option == ast_instruction){
-            printf("line #%d\n", line_c.line_number);
             return process_inst(&line_c, ic, s_table, c_word, as_tree);
         }
     }
