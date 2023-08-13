@@ -15,15 +15,15 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
            as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_cmp ||
            as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_lea ||
            as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_mov){
-            if(as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_types[0] == label){
-                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_values[0].label) == NULL){
-                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_values[0].label);
+            if(as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[0] == label){
+                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label) == NULL){
+                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[0].label);
                     return false;
                 }
             }
-            else if(as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_types[1] == label){
-                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_values[1].label) == NULL){
-                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_group.a_group_op_codes.op_values[1].label);
+            else if(as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_num_arr[1] == label){
+                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].label) == NULL){
+                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.a_set_op_codes.inst_arr[1].label);
                     return false;
                 }
             }
@@ -34,9 +34,9 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
                 as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_clr ||
                 as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_prn ||
                 as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_red){
-            if(as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_type == label){
-                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_value.label) == NULL){
-                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_value.label);
+            if(as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label) == NULL){
+                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label);
                     return false;
                 }
             }
@@ -44,9 +44,9 @@ bool second_pass_process_line(line_content line_c, symbol_table *s_table, ast as
         else if(as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jsr ||
                 as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_bne ||
                 as_tree.ast_dir_or_inst.instruction.op_code.op_c == op_jmp){
-            if(as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_type == label){
-                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_value.label) == NULL){
-                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_group.b_group_op_codes.op_value.label);
+            if(as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
+                if(get_symbol_from_table(s_table, as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label) == NULL){
+                    print_error(&line_c, "Label %s is not defined", as_tree.ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label);
                     return false;
                 }
             }

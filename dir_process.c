@@ -1,6 +1,7 @@
 
 
 #include "dir_process.h"
+#include <stdio.h>
 
 data_m_word process_char(char ch){
     data_m_word d_word = {0};

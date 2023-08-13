@@ -31,3 +31,4 @@ char num_to_base_64(int val);
 void print_error(line_content *line_c, char *format, ...);
 void update_data_sym_address(symbol_table *s_table, unsigned int ic);
 bool all_digit(char *str);
+void free_c_word(code_m_word c_word[], unsigned int ic);

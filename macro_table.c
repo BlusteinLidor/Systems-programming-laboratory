@@ -6,6 +6,7 @@
 #include <string.h>
 #include "macro_table.h"
 #include "global_att.h"
+#include <stdio.h>
 
 macro_table *new_macro_table(void){
     int i = 0;
@@ -71,6 +72,17 @@ void free_macro_table(macro_table *m_table){
     free(m_table->macros);
     free(m_table);
 }
+
+void print_macro_table(macro_table *m_table){
+    int i = 0;
+    macro *curr_macro;
+    for(; i < m_table->free_index; i++){
+        if((curr_macro = m_table->macros[i]) != NULL){
+            printf("macro #%d = %s:\n%s\n", (i+1), curr_macro->macro_name, curr_macro->macro_content);
+        }
+    }
+}
+
 
 
 
