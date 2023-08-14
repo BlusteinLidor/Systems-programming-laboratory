@@ -1,17 +1,13 @@
-
-
 #include "symbol_table.h"
 #include <stdlib.h>
 #include <string.h>
 #include "global_att.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 symbol_table *new_symbol_table(void){
     int i = 0;
     /* allocating memory for the s_table */
     symbol_table *s_table = malloc(sizeof(symbol_table));
-    /* allocating memory for the individual macros */
+    /* allocating memory for the individual symbols */
     s_table->symbols = malloc(sizeof(symbol) * TABLE_SIZE);
     /* initializing the individual symbols to NULL */
     for(; i < TABLE_SIZE; i++){
@@ -24,7 +20,9 @@ symbol_table *new_symbol_table(void){
 }
 
 symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type symbol_t){
+    /* allocate memory for the symbol */
     symbol *new_s = malloc(sizeof(symbol));
+    /* allocate memory for the symbol name */
     new_s->symbol_name = malloc(strlen(symbol_name));
     new_s->symbol_address = symbol_address;
     strcpy(new_s->symbol_name, symbol_name);
@@ -34,61 +32,51 @@ symbol *new_symbol(char *symbol_name, unsigned int symbol_address, symbol_type s
 }
 
 void add_symbol_to_table(symbol_table *s_table, symbol *smbl){
+    /* add the symbol in the free index spot */
     s_table->symbols[s_table->free_index] = smbl;
+    /* increment free index */
     s_table->free_index++;
-}
-
-int get_symbol_address_from_table(symbol_table *s_table, char *symbol_name){
-    int i = 0;
-    for(; i < s_table->free_index; i++){
-        if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
-            return s_table->symbols[i]->symbol_address;
-        }
-    }
-    return -1;
 }
 
 symbol_type get_symbol_type_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
+    /* loop over all available symbols in the table and compare names*/
     for(; i < s_table->free_index; i++){
         if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0) {
+            /* return symbol type */
             return s_table->symbols[i]->symbol_t;
         }
     }
+    /* if symbol wasn't found - return error type */
     return error_symbol;
 }
 
 symbol *get_symbol_from_table(symbol_table *s_table, char *symbol_name){
     int i = 0;
+    /* loop over all available symbols in the table and compare names*/
     for(; i < s_table->free_index; i++){
         if(strcmp(s_table->symbols[i]->symbol_name, symbol_name) == 0){
+            /* return symbol */
             return s_table->symbols[i];
         }
     }
+    /* if symbol wasn't found - return null */
     return NULL;
 }
 
 void free_symbol_table(symbol_table *s_table){
     int i = 0;
     symbol *curr_symbol;
+    /* loop over all available symbols in the table and free their memory */
     for(; i < s_table->free_index; i++){
         if((curr_symbol = s_table->symbols[i]) != NULL){
             free(curr_symbol->symbol_name);
             free(curr_symbol);
         }
     }
+    /* after freeing all symbols - set free_index to 0 */
     s_table->free_index = 0;
+    /* free the table */
     free(s_table->symbols);
     free(s_table);
-}
-
-void print_symbol_table(symbol_table *s_table){
-    int i = 0;
-    symbol *curr_symbol;
-    printf("\n");
-    for(; i < s_table->free_index; i++){
-        if((curr_symbol = s_table->symbols[i]) != NULL){
-            printf("symbol #%d of type %d = %s: %d\n", (i+1), curr_symbol->symbol_t, curr_symbol->symbol_name, ((curr_symbol->symbol_address) + 100));
-        }
-    }
 }

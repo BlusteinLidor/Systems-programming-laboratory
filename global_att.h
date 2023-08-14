@@ -1,6 +1,5 @@
-/*
- Created by לידור on 07/06/2023.
-*/
+/* This file contains all the global attributes for the project,
+ * like constants, definitions and more */
 
 #ifndef FINAL_PROJECT_GLOBAL_ATT_H
 #define FINAL_PROJECT_GLOBAL_ATT_H
@@ -24,23 +23,25 @@
 #define REG_AT_SIGN_INDEX 0
 #define REG_NUM 7
 
-/*@TODO Check if ifndef needed*/
-
+/* machine word of an immediate or direct code */
 typedef struct im_or_dir_m_word{
     unsigned int ARE: 2;
     unsigned int operand: 10;
 } im_or_dir_m_word;
 
+/* machine word of a .data or .string code */
 typedef struct data_m_word{
     unsigned int data_or_string: 12;
 } data_m_word;
 
+/* machine word of direct register operands code */
 typedef struct im_reg_m_word{
     unsigned int ARE: 2;
     unsigned int target_reg: 5;
     unsigned int source_reg: 5;
 } im_reg_m_word;
 
+/* machine word of first word */
 typedef struct first_word{
     unsigned int ARE: 2;
     unsigned int target_reg: 3;
@@ -82,11 +83,20 @@ typedef enum op{
     op_error
 } op;
 
+/* defines an op code - conatines:
+ * op_c - the op code number
+ * name - the op code name (string) */
 typedef struct op_code{
     op op_c;
     char *name;
 } op_code;
 
+/* defines a machine word - contains:
+ * label - the label name
+ * c_word - union holding one of the machine code types:
+ *      f_word - first word
+ *      im_dir - immediate/direct word
+ *      im_reg - register word */
 typedef struct code_m_word{
     char *label;
     union c_word{
@@ -105,15 +115,15 @@ typedef enum symbol_type{
     error_symbol
 } symbol_type;
 
+/* defines a line's content:
+ *      file_name - the file name the line's in
+ *      content - the line's content
+ *      line_number - the current line number */
 typedef struct line_content{
     char *file_name;
     char *content;
     int line_number;
 } line_content;
-
-
-
-
 
 #endif /*FINAL_PROJECT_GLOBAL_ATT_H*/
 
