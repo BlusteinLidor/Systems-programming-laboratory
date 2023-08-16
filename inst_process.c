@@ -64,6 +64,7 @@ void process_register(unsigned int *ic, code_m_word code_m[], char reg1, char re
     if(reg2 >= 0){
         code_word.c_word.im_reg->target_reg = reg2 - '0';
     }
+    code_m[(*ic)++] = code_word;
 }
 
 void process_label(unsigned int *ic, code_m_word code_m[], char label[]){

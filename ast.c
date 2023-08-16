@@ -155,9 +155,7 @@ void get_extern(char *line_content, int *index, ast *as_tree){
     int len = 0;
     SKIP_WHITE_CHAR(line_content, *index);
     if(as_tree->label[0] != '\0'){
-        as_tree->ast_line_option = ast_error_line;
-        strcpy(as_tree->ast_error, "Name already used");
-        return;
+        as_tree->label[0] = '\0';
     }
     for(len = 0; line_content[*index + len] != '\n' && line_content[*index + len] != EOF
                  && line_content[*index + len] != '\0' && !(isspace(line_content[*index + len])); len++);
@@ -188,9 +186,7 @@ void get_entry(char *line_content, int *index, ast *as_tree){
     int len = 0;
     SKIP_WHITE_CHAR(line_content, *index);
     if(as_tree->label[0] != '\0'){
-        as_tree->ast_line_option = ast_error_line;
-        strcpy(as_tree->ast_error, "Name already used in label");
-        return;
+        as_tree->label[0] = '\0';
     }
     if(line_content[*index] == '\n' || line_content[*index] == EOF
        || line_content[*index] == '\0'){

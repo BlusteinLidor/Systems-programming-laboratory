@@ -65,7 +65,8 @@
 				11,
 				15,
 				18,
-				20
+				20,
+				22
 			]
 		}
 	],
@@ -129,7 +130,8 @@
 				11,
 				15,
 				18,
-				20
+				20,
+				22
 			]
 		}
 	],
@@ -255,6 +257,12 @@
 			"backtrace" : 1,
 			"path" : "dir_process.h",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "asdas.c",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
