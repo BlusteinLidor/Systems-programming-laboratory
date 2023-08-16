@@ -12,7 +12,7 @@
  * and saves the new (without the macro definition, and with the
  * macro already separated) file - with format .am
  * @param file_name - the file name without format
- * @return true - if there was no errors */
+ * @return true - if there were no errors */
 bool pre_process(char *file_name);
 
 #endif

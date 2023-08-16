@@ -15,7 +15,7 @@
  * @param s_table - symbol table
  * @param code_m - the machine word
  * @param as_tree - the Abstract syntax tree
- * @return true - if there was not errors */
+ * @return true - if there were no errors */
 bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table, code_m_word *code_m, ast *as_tree);
 
 /* process the first word in an instruction line
