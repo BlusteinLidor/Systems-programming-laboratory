@@ -79,9 +79,9 @@ typedef struct ast{
                 /* op code b set */
                 struct{
                     /* operand type number */
-                    operand_type_num inst_num;
+                    operand_type_num op_type_num;
                     /* operand type value */
-                    union operand_type inst_arr;
+                    union operand_type op_value;
                 } b_set_op_codes;
             } op_code_set;
         } instruction;

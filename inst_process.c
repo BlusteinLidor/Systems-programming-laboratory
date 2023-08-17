@@ -158,7 +158,7 @@ bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table,
        as_tree->ast_dir_or_inst.instruction.op_code.op_c == op_jmp){
         /* if the op code is not 'prn' and the operand is immediate
          * print error and return false*/
-        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate &&
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == immediate &&
            as_tree->ast_dir_or_inst.instruction.op_code.op_c != op_prn){
             as_tree->ast_line_option = ast_error_line;
             print_error(line_c, "Not valid for this cmd");
@@ -166,20 +166,20 @@ bool process_inst(line_content *line_c, unsigned int *ic, symbol_table *s_table,
         }
         /* process first word */
         process_first_word(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code, 0,
-                           as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num);
+                           as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num);
         /* operand is an immediate */
-        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
-            process_immediate(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate);
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == immediate){
+            process_immediate(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.immediate);
             return true;
         }
         /* operand is a label */
-        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
-            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label);
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == label){
+            process_label(ic, code_m, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.label);
             return true;
         }
         /* operand is a register */
-        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
-            process_register(ic, code_m, -1, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.reg);
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == regstr){
+            process_register(ic, code_m, -1, as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.reg);
             return true;
         }
     }

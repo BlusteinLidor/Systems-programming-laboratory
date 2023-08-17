@@ -493,7 +493,7 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
         return;
     }
     /* check validity and store the operand into the tree */
-    as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num = check_op(op, as_tree);
+    as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num = check_op(op, as_tree);
     /* if not valid - error */
     if(as_tree->ast_line_option == ast_error_line){
         free(op);
@@ -501,16 +501,16 @@ void get_group_b_op(char *line_c, int *index, ast *as_tree){
     }
     else{
         /* operand - immediate */
-        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == immediate){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.immediate = atoi(op);
+        if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == immediate){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.immediate = atoi(op);
         }
         /* operand - label */
-        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == label){
-            strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.label, op);
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == label){
+            strcpy(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.label, op);
         }
         /* operand - register */
-        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_num == regstr){
-            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.inst_arr.reg = op[2];
+        else if(as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_type_num == regstr){
+            as_tree->ast_dir_or_inst.instruction.op_code_set.b_set_op_codes.op_value.reg = op[2];
         }
         /* free memory and return */
         free(op);
